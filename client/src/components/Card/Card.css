@@ -1,0 +1,9 @@
+.racketImageContainer {
+    width: 20px;
+    height: 20px;
+}
+
+.racketImageContainer img {
+    width: 100%;
+    height: auto;
+}

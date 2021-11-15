@@ -1,0 +1,74 @@
+{
+    "racketsSpecs": [
+        {
+            "modelID": 10,
+            "brand": "Babolat",
+            "model": "Pure Aero",
+            "price": 229.00,
+            "headSize": 100,
+            "length": 27.5,
+            "weight": 300,
+            "stringPattern": "16x19"
+        },
+        {
+            "modelID": 3,
+            "brand": "Tecnifibre",
+            "model": "TFight 305 RS",
+            "price": 229.95,
+            "headSize": 98,
+            "length": 27,
+            "weight": 305,
+            "stringPattern": "18x19"
+        },
+        {
+            "modelID": 151,
+            "brand": "Wilson",
+            "model": "Blade 98 v7.0",
+            "price": 219.00,
+            "headSize": 98,
+            "length": 27,
+            "weight": 305,
+            "stringPattern": "16x19"
+        },
+        {
+            "modelID": 41,
+            "brand": "Head",
+            "model": "Graphene 360+ Speed Pro",
+            "price": 239.95,
+            "headSize": 100,
+            "length": 27,
+            "weight": 309,
+            "stringPattern": "18x20"
+        },
+        {
+            "modelID": 23,
+            "brand": "Yonex",
+            "model": "Ezone 98 L",
+            "price": 229.00,
+            "headSize": 98,
+            "length": 27,
+            "weight":285,
+            "stringPattern": "16x19"
+        },
+        {
+            "modelID": 113,
+            "brand": "Dunlop",
+            "model": "Srixon SX 300 Tour",
+            "price": 199.99,
+            "headSize": 100,
+            "length": 27,
+            "weight": 310,
+            "stringPattern": "16x19"
+        },
+        {
+            "modelID": 45,
+            "brand": "Pro",
+            "model": "Ki Black Ace",
+            "price": 199.00,
+            "headSize": 100,
+            "length": 27,
+            "weight": 315,
+            "stringPattern": "16x19"
+        }
+    ]
+}

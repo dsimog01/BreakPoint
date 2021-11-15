@@ -1,0 +1,28 @@
+{
+    "todos": [
+        {
+            "title": "Task 1",
+            "responsible": "Mark",
+            "description": "leer libro",
+            "priority": "low"
+        },
+        {
+            "title": "Task 2",
+            "responsible": "Ryan",
+            "description": "comprar pan",
+            "priority": "medium"
+        },
+        {
+            "title": "Task 3",
+            "responsible": "Joseph",
+            "description": "pasear perro",
+            "priority": "high"
+        },
+        {
+            "title": "Task 4",
+            "responsible": "Joseph",
+            "description": "vender muebles",
+            "priority": "high"
+        }
+    ]
+}

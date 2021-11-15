@@ -1,0 +1,21 @@
+input {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-inline: 3px;
+}
+
+.first-line {
+    display:flex;
+}
+
+.second-line {
+    display:flex;
+}
+
+.third-line {
+    display:flex;
+}
+
+#card-body{
+    max-width: 50rem;
+}
