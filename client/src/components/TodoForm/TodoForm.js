@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import InputField from '../InputField';
+import InputField from '../InputField/InputField';
 
 class TodoForm extends Component {
     constructor() {

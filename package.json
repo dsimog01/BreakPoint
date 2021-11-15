@@ -14,7 +14,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "neo4j-driver": "*",
-    "bcrypt": "^4.0.0"
+    "bcrypt": "^5.0.0"
   },
   "engines": {
     "node": "12.21.0"
