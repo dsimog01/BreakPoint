@@ -34,15 +34,9 @@ function App() {
   return (
 
     <div className="App">
-      <Navigation/>
-      <div className="container" id="input-container">
-        <RacketInput onAddTodo={addTodo} />
-      </div>  
-
-      <p>{!data ? "Loading..." : data}</p>
-
+      <Navigation/> 
       <RacketSelector/>    
-
+      <p>{!data ? "Loading..." : data}</p>
       <Footer/>
     </div>
 

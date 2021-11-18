@@ -48,40 +48,65 @@ async function getRatedRackets() {
 }
 
 app.get("/getCollabTable", async (req, res) => {
-    console.log(await getCollabTable());
+  await getCollabTable();
 });
 
 async function getCollabTable() {
+
+  let collabTable = [];
   
-    let collabTable = {};
+  let racketsNumber = (await getNumberOfRackets())[0].get(0);
+  let usersNumber = (await getNumberOfUsers())[0].get(0);
 
-    let raters = await getRaters();      
+  putZeros(collabTable, usersNumber, racketsNumber);
 
-    for(let rater of raters){
-      let userRatings = {};
-  
-      let racketsRated = await getRacketsRatedByUser(rater._fields[0].properties.username);
+  let allRatings = await getAllRatings();
 
-        for(let racketRated of racketsRated){
+  allRatings.forEach(function(rating){
+    collabTable[rating._fields[0].properties.userID-1][rating._fields[2].properties.modelID-1] = rating._fields[1].properties.rating;
+  });
 
-          let rating = await getRating(racketRated._fields[0].properties.modelID, rater._fields[0].properties.username);
-            userRatings[racketRated._fields[0].properties.modelID] = rating[0]._fields[0];
-        }
-    
-        collabTable[rater._fields[0].properties.username] = userRatings;
-    }
-
-    return collabTable;
+  return collabTable;
 }
 
-async function getRating(modelID, username) {
-    
+function putZeros(collabTable, usersNumber, racketsNumber){
+
+  let userRatings = [];
+
+  for(let j = 0; j < racketsNumber; j++){
+    userRatings.push(0);
+  }
+
+  for(let i = 0; i < usersNumber; i++){
+
+    collabTable.push(userRatings.slice());
+  }
+}
+
+
+async function getAllRatings(){
   let query = `MATCH (u:User)-[rt:RATED]->(r:Racket)
-              WHERE u.username = '${username}' AND r.modelID = '${modelID}'
-              RETURN rt.rating`;
-  
+              RETURN u,rt,r`;
+
   return getFromDB(query);
 }
+
+async function getNumberOfRackets() {
+
+  let query = `MATCH (r:Racket)
+              RETURN COUNT(r)`;
+
+  return getFromDB(query);
+}
+
+async function getNumberOfUsers() {
+  
+    let query = `MATCH (u:User)
+                RETURN COUNT(u)`;
+  
+    return getFromDB(query);
+}
+
 
 async function getFromDB(query){
   let result = await session.readTransaction(tx =>

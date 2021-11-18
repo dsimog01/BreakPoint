@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Navbar, Container } from 'react-bootstrap';
 import logo from '../../media/tennis.svg';
-import Login from '../Login/Login';
+import AuthenticationButton from '../Login/AuthenticationButton';
+import AuthNav from './AuthNav';
 import './Navigation.css';
 
 
@@ -11,13 +12,20 @@ class Navigation extends Component {
           <Navbar>
               <Container>
                 <Navbar.Brand>
-                  <div className="border border-5 border-dark rounded-pill">
-                  
-                    <img src={logo} className="App-logo d-inline-block align-top" alt="logo" />{' '}
-                    <span><b>BreakPoint</b></span>
+                  <div id="nav-container" class="d-flex justify-content-around">
+                    <div id="main-logo" className="border border-5 border-dark rounded-pill">
                     
-                  </div>
+                      <img src={logo} className="App-logo d-inline-block align-top" alt="logo" />{' '}
+                      <span id="name"><b>BreakPoint</b></span>
+                      
+                    </div>
 
+                    <div class="ml-auto p-2">
+                      <AuthNav id="login-button"/>
+                    
+                    </div>
+
+                  </div>
                 </Navbar.Brand>
               </Container>
             </Navbar>

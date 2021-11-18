@@ -7,6 +7,9 @@ import yonex from '../../media/rackets/yonex.jpg';
 import dunlop from '../../media/rackets/dunlop.jpg';
 import pro from '../../media/rackets/pro.jpg';
 
+import { Rating } from '@mui/material';
+
+
 
 class Card extends Component {
 
@@ -23,9 +26,9 @@ class Card extends Component {
           "Yonex": yonex,
           "Dunlop": dunlop,
           "Pro": pro
-        }
+        },
+        racketBrand: this.props.racket.brand.toLowerCase()
       }
-
 
     }
     
@@ -47,7 +50,7 @@ class Card extends Component {
               <p>{this.props.racket.length}in {this.props.racket.headSize}in2</p>
             </div>
             <div className="card-footer">
-              <button className="btn btn-success" onClick={this.props.onClickDelete}>Select</button>
+              <Rating name={this.state.racketBrand} /*onChange={(event, newValue) => { setValue(newValue);}}*//>
             </div>
           </div>
         );

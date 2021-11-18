@@ -13,15 +13,6 @@ class RacketSelector extends Component {
 
     render(){
 
-        const racket = {
-            "brand": "Babolat",
-            "price": 239.95,
-            "headSize": 98,
-            "length": 27,
-            "weight": 315,
-            "stringPattern": "16x19"
-        };
-
         const storedRackets = this.state.rackets.racketsSpecs.map((racketItem, i) => {
             return (
               <div className="col-md-4">
@@ -32,7 +23,7 @@ class RacketSelector extends Component {
 
         return(
             <div className="container mt-5 p-4 border rounded-3">
-                <h2> Would you play with any of these rackets?  </h2>  
+                <h2> Could you rate the following rackets?  </h2>  
                 <div className="container row">
                     {storedRackets}
                 </div>

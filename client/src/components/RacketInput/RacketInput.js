@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import InputField from '../InputField/InputField';
 import './RacketInput.css';
 
 class RacketInput extends Component {

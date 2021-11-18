@@ -4,6 +4,17 @@ img {
     width: "30";
 }
 
-span {
-    padding: 3px;
+#main-logo {
+    padding: 8px;
+    float:left;
 }
+
+#login-button :nth-of-type(2){
+    float: right;
+}
+
+#nav-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
