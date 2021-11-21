@@ -10,6 +10,7 @@ import TodoItemManager from './logic/TodoItemManager';
 import racketSpecs from './data/racketsSpecs.json'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RacketInput from "./components/RacketInput/RacketInput";
+import StringSelector from "./components/StringSelector/StringSelector";
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
       <Navigation/> 
       <RacketSelector/>    
       <p>{!data ? "Loading..." : data}</p>
+      <StringSelector/>
       <Footer/>
     </div>
 

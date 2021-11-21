@@ -1,34 +1,34 @@
 import React, { Component } from 'react';
-import Card from '../Card/Card';
-import rackets from '../../data/racketsSpecs.json';
+import Card from '../Card/StringCard';
+import strings from '../../data/stringsSpecs.json';
 
-class RacketSelector extends Component {
+class StringSelector extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            rackets: rackets
+            strings: strings
         };
     }
 
     render(){
 
-        const storedRackets = this.state.rackets.racketsSpecs.map((racketItem, i) => {
+        const storedStrings = this.state.strings.stringsSpecs.map((stringItem, i) => {
             return (
               <div className="col-md-4">
-                <Card racket={racketItem}/>
+                <Card string={stringItem}/>
               </div>
             )
           });
 
         return(
             <div className="container mt-5 p-4 border rounded-3">
-                <h2> Could you rate the following rackets?  </h2>  
+                <h2> Could you rate the following strings?  </h2>  
                 <div className="container row">
-                    {storedRackets}
+                    {storedStrings}
                 </div>
             </div>
         );
     }
 }
 
-export default RacketSelector;
+export default StringSelector;

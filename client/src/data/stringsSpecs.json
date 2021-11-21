@@ -1,0 +1,44 @@
+{
+    "stringsSpecs": [
+        {
+            "modelID": 2,
+            "brand": "Wilson",
+            "model": "Luxilon Big Banger ALU Power 16",
+            "type": "Monofilament",
+            "composition": "Aluminium",
+            "gauge_mm": 1.25
+        },
+        {
+            "modelID": 4,
+            "brand": "Solinco",
+            "model": "Hyper-G 19",
+            "type": "Monofilament",
+            "composition": "Co-polyester",
+            "gauge_mm": 1.1
+        },
+        {
+            "modelID": 6,
+            "brand": "Prince",
+            "model": "Synthetic Gut Dura Flex 16",
+            "type": "Multifilament",
+            "composition": "Nylon",
+            "gauge_mm": 1.3
+        },
+        {
+            "modelID": 10,
+            "brand": "Babolat",
+            "model": "VS Touch 16",
+            "type": "Gut",
+            "composition": "Gut",
+            "gauge_mm": 1.3
+        },
+        {
+            "modelID": 17,
+            "brand": "Yonex",
+            "model": "Poly Tour Pro 17",
+            "type": "Monofilament",
+            "composition": "Polyester",
+            "gauge_mm": 1.2
+        }
+    ]
+}
