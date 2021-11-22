@@ -1,28 +1,22 @@
 import React from "react";
 import './App.css';
 import Navigation from './components/Navigation/Navigation';
-import TodoForm from './components/TodoForm/TodoForm';
-import Card from './components/Card/Card';
 import Footer from './components/Footer/FooterPage';
 import RacketSelector from "./components/RacketSelector/RacketSelector";
-import TodoItemManager from './logic/TodoItemManager';
-//import { todos } from './data/todos.json';
-import racketSpecs from './data/racketsSpecs.json'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import RacketInput from "./components/RacketInput/RacketInput";
 import StringSelector from "./components/StringSelector/StringSelector";
 
 function App() {
 
-  const [data, setData] = React.useState(null);
+  /*const [data, setData] = React.useState(null);
 
   React.useEffect(() => {
-    fetch("/getRackets")
+    fetch("/getRacketBrands")
       .then((res) => res.json())
       .then((data) => setData(data.message));
-  }, []);
+  }, []);*/
 
-  const {addTodo, removeTodo} = TodoItemManager(this);
+  //const {addTodo, removeTodo} = TodoItemManager(this);
 
   /*const storedTodos = this.state.todos.map((todo, i) => {
     return (
@@ -37,11 +31,11 @@ function App() {
     <div className="App">
       <Navigation/> 
       <RacketSelector/>    
-      <p>{!data ? "Loading..." : data}</p>
       <StringSelector/>
       <Footer/>
     </div>
 
+//<p>{!data ? "Loading..." : data}</p>
 
 
     /*<div className="App">

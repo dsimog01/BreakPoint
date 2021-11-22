@@ -195,11 +195,31 @@ async function getNumberOfUsers() {
     return getFromDB(query);
 }
 
+async function getRacketBrands() {
+
+  let query = `MATCH (r:Racket)-[:IS_OF_BRAND]->(b:Brand)
+              RETURN DISTINCT b.brandName`;
+
+  return getFromDB(query);
+}
+
+async function getHeadSizes(brand) {
+  
+    let query = `MATCH (b:Brand)<-[:IS_OF_BRAND]-(r:Racket)-[:HAS_DIMENSIONS]->(d:Dimension)
+    WHERE b.brandName = '${brand}' AND d.headSize_in2 IS NOT NULL
+    RETURN d.headSize_in2`;
+  
+    return getFromDB(query);
+}
+
 
 async function getFromDB(query){
+
   let result = await session.readTransaction(tx =>
     tx.run(query) 
   );
+
+  session.close();
 
   return result.records;
 }
@@ -217,6 +237,27 @@ app.get("/getRacketsRatedByUser/", async (req, res) => {
   let rackets = await getRacketsRatedByUser(req.query.username);
   console.log(rackets);
 });
+
+app.get("/getRacketBrands", (req, res) => {
+  getRacketBrands().then(brands => {
+  
+    let brandsArray = [];
+
+    brands.forEach(function(brand){
+      brandsArray.push(brand._fields[0]);
+    });
+  
+    res.json({message: JSON.stringify(brandsArray)});
+  });
+
+});
+
+app.get("/getHeadSizes", async (req, res) => {
+  let headSizes = await getHeadSizes(req.query.brand);
+  res.send(headSizes);
+});
+
+
 
 
 app.listen(port, () => {

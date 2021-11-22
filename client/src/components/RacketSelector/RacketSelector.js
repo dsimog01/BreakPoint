@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Card from '../Card/Card';
 import rackets from '../../data/racketsSpecs.json';
+import RacketRater from "../../components/RacketRater/RacketRater";
+
 
 class RacketSelector extends Component {
     constructor(props) {
@@ -26,6 +28,7 @@ class RacketSelector extends Component {
                 <div className="container row">
                     {storedRackets}
                 </div>
+                <RacketRater/>
             </div>
         );
     }
