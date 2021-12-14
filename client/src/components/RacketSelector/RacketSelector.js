@@ -41,7 +41,7 @@ export default function RacketSelector(props) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(ratings)
             };
-            fetch('http://localhost:3001/postRatings?username='+user.email, requestOptions)
+            fetch('http://localhost:3001/postRacketRatings?username='+user.email, requestOptions)
             .then(response => response.json())
             .then(data => data);
         }else{

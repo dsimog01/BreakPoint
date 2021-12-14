@@ -28,7 +28,6 @@ export default function Card(props) {
   function saveRating(newValue){
     let newRatings = props.ratings;
     newRatings[props.racket.modelID] = newValue;
-    console.log(newRatings);
     props.updateRatings(newRatings);
   }
 

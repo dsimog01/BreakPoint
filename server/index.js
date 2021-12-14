@@ -59,17 +59,28 @@ app.get("/getCollaborativeRecommendation", async (req, res) => {
 });
 
 app.post("/postRacketRatings", jsonParser, async (req,res) => {
-  let ratings = req.body;
-
-  let modelIDs = Object.keys(ratings);
-  modelIDs = modelIDs.map((x) => {return parseInt(x, 10)});
-  let ratingValues = Object.values(ratings);
-  ratingValues = ratingValues.map((x) => {return parseInt(x, 10)});
-  let username = req.query.username.split("@")[0];
+  [username, modelIDs, ratingValues] = getRequestArrays(req.body, req.query.username);
 
   await saveRacketRatings(username, modelIDs, ratingValues);
   res.send('');
 });
+
+app.post("/postStringRatings", jsonParser, async (req,res) => {
+  [username, modelIDs, ratingValues] = getRequestArrays(req.body, req.query.username);
+
+  await saveStringRatings(username, modelIDs, ratingValues);
+  res.send('');
+});
+
+function getRequestArrays(ratings, userEmail){
+  let modelIDs = Object.keys(ratings);
+  modelIDs = modelIDs.map((x) => {return parseInt(x, 10)});
+  let ratingValues = Object.values(ratings);
+  ratingValues = ratingValues.map((x) => {return parseInt(x, 10)});
+  let username = userEmail.split("@")[0];
+
+  return [username, modelIDs, ratingValues];
+}
 
 //DELETE THIS
 app.get("/getTest", async (req, res) => {

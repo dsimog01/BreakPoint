@@ -19,6 +19,13 @@ export default function StringCard(props) {
 
   let stringBrand = props.string.brand.toLowerCase();
 
+  function saveRating(newValue){
+    let newRatings = props.ratings;
+    newRatings[props.string.modelID] = newValue;
+    console.log(newRatings);
+    props.updateRatings(newRatings);
+  }
+
   return (
     <div id="card-container" className="card mt-4">
       <div className="card-header">
@@ -36,7 +43,7 @@ export default function StringCard(props) {
         <p>{props.string.gauge_mm}mm</p>
       </div>
       <div className="card-footer">
-        <Rating name={stringBrand} /*onChange={(event, newValue) => { setValue(newValue);}}*//>
+        <Rating name={stringBrand} onChange={(event, newValue) => saveRating(newValue)}/>
       </div>
     </div>
   )
