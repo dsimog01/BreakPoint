@@ -1,0 +1,1009 @@
+WITH row, u
+MATCH (r:Racket {modelID: 1})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket1)
+
+WITH row, u
+MATCH (r:Racket {modelID: 2})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket2)
+
+WITH row, u
+MATCH (r:Racket {modelID: 3})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket3)
+
+WITH row, u
+MATCH (r:Racket {modelID: 4})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket4)
+
+WITH row, u
+MATCH (r:Racket {modelID: 5})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket5)
+
+WITH row, u
+MATCH (r:Racket {modelID: 6})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket6)
+
+WITH row, u
+MATCH (r:Racket {modelID: 7})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket7)
+
+WITH row, u
+MATCH (r:Racket {modelID: 8})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket8)
+
+WITH row, u
+MATCH (r:Racket {modelID: 9})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket9)
+
+WITH row, u
+MATCH (r:Racket {modelID: 10})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket10)
+
+WITH row, u
+MATCH (r:Racket {modelID: 11})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket11)
+
+WITH row, u
+MATCH (r:Racket {modelID: 12})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket12)
+
+WITH row, u
+MATCH (r:Racket {modelID: 13})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket13)
+
+WITH row, u
+MATCH (r:Racket {modelID: 14})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket14)
+
+WITH row, u
+MATCH (r:Racket {modelID: 15})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket15)
+
+WITH row, u
+MATCH (r:Racket {modelID: 16})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket16)
+
+WITH row, u
+MATCH (r:Racket {modelID: 17})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket17)
+
+WITH row, u
+MATCH (r:Racket {modelID: 18})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket18)
+
+WITH row, u
+MATCH (r:Racket {modelID: 19})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket19)
+
+WITH row, u
+MATCH (r:Racket {modelID: 20})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket20)
+
+WITH row, u
+MATCH (r:Racket {modelID: 21})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket21)
+
+WITH row, u
+MATCH (r:Racket {modelID: 22})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket22)
+
+WITH row, u
+MATCH (r:Racket {modelID: 23})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket23)
+
+WITH row, u
+MATCH (r:Racket {modelID: 24})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket24)
+
+WITH row, u
+MATCH (r:Racket {modelID: 25})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket25)
+
+WITH row, u
+MATCH (r:Racket {modelID: 26})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket26)
+
+WITH row, u
+MATCH (r:Racket {modelID: 27})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket27)
+
+WITH row, u
+MATCH (r:Racket {modelID: 28})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket28)
+
+WITH row, u
+MATCH (r:Racket {modelID: 29})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket29)
+
+WITH row, u
+MATCH (r:Racket {modelID: 30})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket30)
+
+WITH row, u
+MATCH (r:Racket {modelID: 31})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket31)
+
+WITH row, u
+MATCH (r:Racket {modelID: 32})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket32)
+
+WITH row, u
+MATCH (r:Racket {modelID: 33})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket33)
+
+WITH row, u
+MATCH (r:Racket {modelID: 34})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket34)
+
+WITH row, u
+MATCH (r:Racket {modelID: 35})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket35)
+
+WITH row, u
+MATCH (r:Racket {modelID: 36})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket36)
+
+WITH row, u
+MATCH (r:Racket {modelID: 37})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket37)
+
+WITH row, u
+MATCH (r:Racket {modelID: 38})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket38)
+
+WITH row, u
+MATCH (r:Racket {modelID: 39})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket39)
+
+WITH row, u
+MATCH (r:Racket {modelID: 40})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket40)
+
+WITH row, u
+MATCH (r:Racket {modelID: 41})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket41)
+
+WITH row, u
+MATCH (r:Racket {modelID: 42})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket42)
+
+WITH row, u
+MATCH (r:Racket {modelID: 43})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket43)
+
+WITH row, u
+MATCH (r:Racket {modelID: 44})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket44)
+
+WITH row, u
+MATCH (r:Racket {modelID: 45})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket45)
+
+WITH row, u
+MATCH (r:Racket {modelID: 46})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket46)
+
+WITH row, u
+MATCH (r:Racket {modelID: 47})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket47)
+
+WITH row, u
+MATCH (r:Racket {modelID: 48})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket48)
+
+WITH row, u
+MATCH (r:Racket {modelID: 49})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket49)
+
+WITH row, u
+MATCH (r:Racket {modelID: 50})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket50)
+
+WITH row, u
+MATCH (r:Racket {modelID: 51})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket51)
+
+WITH row, u
+MATCH (r:Racket {modelID: 52})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket52)
+
+WITH row, u
+MATCH (r:Racket {modelID: 53})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket53)
+
+WITH row, u
+MATCH (r:Racket {modelID: 54})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket54)
+
+WITH row, u
+MATCH (r:Racket {modelID: 55})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket55)
+
+WITH row, u
+MATCH (r:Racket {modelID: 56})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket56)
+
+WITH row, u
+MATCH (r:Racket {modelID: 57})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket57)
+
+WITH row, u
+MATCH (r:Racket {modelID: 58})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket58)
+
+WITH row, u
+MATCH (r:Racket {modelID: 59})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket59)
+
+WITH row, u
+MATCH (r:Racket {modelID: 60})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket60)
+
+WITH row, u
+MATCH (r:Racket {modelID: 61})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket61)
+
+WITH row, u
+MATCH (r:Racket {modelID: 62})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket62)
+
+WITH row, u
+MATCH (r:Racket {modelID: 63})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket63)
+
+WITH row, u
+MATCH (r:Racket {modelID: 64})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket64)
+
+WITH row, u
+MATCH (r:Racket {modelID: 65})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket65)
+
+WITH row, u
+MATCH (r:Racket {modelID: 66})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket66)
+
+WITH row, u
+MATCH (r:Racket {modelID: 67})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket67)
+
+WITH row, u
+MATCH (r:Racket {modelID: 68})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket68)
+
+WITH row, u
+MATCH (r:Racket {modelID: 69})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket69)
+
+WITH row, u
+MATCH (r:Racket {modelID: 70})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket70)
+
+WITH row, u
+MATCH (r:Racket {modelID: 71})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket71)
+
+WITH row, u
+MATCH (r:Racket {modelID: 72})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket72)
+
+WITH row, u
+MATCH (r:Racket {modelID: 73})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket73)
+
+WITH row, u
+MATCH (r:Racket {modelID: 74})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket74)
+
+WITH row, u
+MATCH (r:Racket {modelID: 75})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket75)
+
+WITH row, u
+MATCH (r:Racket {modelID: 76})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket76)
+
+WITH row, u
+MATCH (r:Racket {modelID: 77})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket77)
+
+WITH row, u
+MATCH (r:Racket {modelID: 78})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket78)
+
+WITH row, u
+MATCH (r:Racket {modelID: 79})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket79)
+
+WITH row, u
+MATCH (r:Racket {modelID: 80})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket80)
+
+WITH row, u
+MATCH (r:Racket {modelID: 81})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket81)
+
+WITH row, u
+MATCH (r:Racket {modelID: 82})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket82)
+
+WITH row, u
+MATCH (r:Racket {modelID: 83})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket83)
+
+WITH row, u
+MATCH (r:Racket {modelID: 84})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket84)
+
+WITH row, u
+MATCH (r:Racket {modelID: 85})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket85)
+
+WITH row, u
+MATCH (r:Racket {modelID: 86})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket86)
+
+WITH row, u
+MATCH (r:Racket {modelID: 87})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket87)
+
+WITH row, u
+MATCH (r:Racket {modelID: 88})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket88)
+
+WITH row, u
+MATCH (r:Racket {modelID: 89})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket89)
+
+WITH row, u
+MATCH (r:Racket {modelID: 90})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket90)
+
+WITH row, u
+MATCH (r:Racket {modelID: 91})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket91)
+
+WITH row, u
+MATCH (r:Racket {modelID: 92})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket92)
+
+WITH row, u
+MATCH (r:Racket {modelID: 93})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket93)
+
+WITH row, u
+MATCH (r:Racket {modelID: 94})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket94)
+
+WITH row, u
+MATCH (r:Racket {modelID: 95})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket95)
+
+WITH row, u
+MATCH (r:Racket {modelID: 96})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket96)
+
+WITH row, u
+MATCH (r:Racket {modelID: 97})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket97)
+
+WITH row, u
+MATCH (r:Racket {modelID: 98})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket98)
+
+WITH row, u
+MATCH (r:Racket {modelID: 99})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket99)
+
+WITH row, u
+MATCH (r:Racket {modelID: 100})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket100)
+
+WITH row, u
+MATCH (r:Racket {modelID: 101})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket101)
+
+WITH row, u
+MATCH (r:Racket {modelID: 102})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket102)
+
+WITH row, u
+MATCH (r:Racket {modelID: 103})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket103)
+
+WITH row, u
+MATCH (r:Racket {modelID: 104})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket104)
+
+WITH row, u
+MATCH (r:Racket {modelID: 105})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket105)
+
+WITH row, u
+MATCH (r:Racket {modelID: 106})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket106)
+
+WITH row, u
+MATCH (r:Racket {modelID: 107})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket107)
+
+WITH row, u
+MATCH (r:Racket {modelID: 108})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket108)
+
+WITH row, u
+MATCH (r:Racket {modelID: 109})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket109)
+
+WITH row, u
+MATCH (r:Racket {modelID: 110})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket110)
+
+WITH row, u
+MATCH (r:Racket {modelID: 111})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket111)
+
+WITH row, u
+MATCH (r:Racket {modelID: 112})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket112)
+
+WITH row, u
+MATCH (r:Racket {modelID: 113})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket113)
+
+WITH row, u
+MATCH (r:Racket {modelID: 114})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket114)
+
+WITH row, u
+MATCH (r:Racket {modelID: 115})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket115)
+
+WITH row, u
+MATCH (r:Racket {modelID: 116})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket116)
+
+WITH row, u
+MATCH (r:Racket {modelID: 117})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket117)
+
+WITH row, u
+MATCH (r:Racket {modelID: 118})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket118)
+
+WITH row, u
+MATCH (r:Racket {modelID: 119})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket119)
+
+WITH row, u
+MATCH (r:Racket {modelID: 120})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket120)
+
+WITH row, u
+MATCH (r:Racket {modelID: 121})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket121)
+
+WITH row, u
+MATCH (r:Racket {modelID: 122})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket122)
+
+WITH row, u
+MATCH (r:Racket {modelID: 123})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket123)
+
+WITH row, u
+MATCH (r:Racket {modelID: 124})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket124)
+
+WITH row, u
+MATCH (r:Racket {modelID: 125})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket125)
+
+WITH row, u
+MATCH (r:Racket {modelID: 126})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket126)
+
+WITH row, u
+MATCH (r:Racket {modelID: 127})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket127)
+
+WITH row, u
+MATCH (r:Racket {modelID: 128})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket128)
+
+WITH row, u
+MATCH (r:Racket {modelID: 129})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket129)
+
+WITH row, u
+MATCH (r:Racket {modelID: 130})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket130)
+
+WITH row, u
+MATCH (r:Racket {modelID: 131})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket131)
+
+WITH row, u
+MATCH (r:Racket {modelID: 132})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket132)
+
+WITH row, u
+MATCH (r:Racket {modelID: 133})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket133)
+
+WITH row, u
+MATCH (r:Racket {modelID: 134})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket134)
+
+WITH row, u
+MATCH (r:Racket {modelID: 135})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket135)
+
+WITH row, u
+MATCH (r:Racket {modelID: 136})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket136)
+
+WITH row, u
+MATCH (r:Racket {modelID: 137})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket137)
+
+WITH row, u
+MATCH (r:Racket {modelID: 138})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket138)
+
+WITH row, u
+MATCH (r:Racket {modelID: 139})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket139)
+
+WITH row, u
+MATCH (r:Racket {modelID: 140})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket140)
+
+WITH row, u
+MATCH (r:Racket {modelID: 141})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket141)
+
+WITH row, u
+MATCH (r:Racket {modelID: 142})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket142)
+
+WITH row, u
+MATCH (r:Racket {modelID: 143})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket143)
+
+WITH row, u
+MATCH (r:Racket {modelID: 144})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket144)
+
+WITH row, u
+MATCH (r:Racket {modelID: 145})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket145)
+
+WITH row, u
+MATCH (r:Racket {modelID: 146})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket146)
+
+WITH row, u
+MATCH (r:Racket {modelID: 147})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket147)
+
+WITH row, u
+MATCH (r:Racket {modelID: 148})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket148)
+
+WITH row, u
+MATCH (r:Racket {modelID: 149})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket149)
+
+WITH row, u
+MATCH (r:Racket {modelID: 150})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket150)
+
+WITH row, u
+MATCH (r:Racket {modelID: 151})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket151)
+
+WITH row, u
+MATCH (r:Racket {modelID: 152})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket152)
+
+WITH row, u
+MATCH (r:Racket {modelID: 153})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket153)
+
+WITH row, u
+MATCH (r:Racket {modelID: 154})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket154)
+
+WITH row, u
+MATCH (r:Racket {modelID: 155})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket155)
+
+WITH row, u
+MATCH (r:Racket {modelID: 156})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket156)
+
+WITH row, u
+MATCH (r:Racket {modelID: 157})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket157)
+
+WITH row, u
+MATCH (r:Racket {modelID: 158})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket158)
+
+WITH row, u
+MATCH (r:Racket {modelID: 159})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket159)
+
+WITH row, u
+MATCH (r:Racket {modelID: 160})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket160)
+
+WITH row, u
+MATCH (r:Racket {modelID: 161})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket161)
+
+WITH row, u
+MATCH (r:Racket {modelID: 162})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket162)
+
+WITH row, u
+MATCH (r:Racket {modelID: 163})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket163)
+
+WITH row, u
+MATCH (r:Racket {modelID: 164})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket164)
+
+WITH row, u
+MATCH (r:Racket {modelID: 165})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket165)
+
+WITH row, u
+MATCH (r:Racket {modelID: 166})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket166)
+
+WITH row, u
+MATCH (r:Racket {modelID: 167})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket167)
+
+WITH row, u
+MATCH (r:Racket {modelID: 168})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket168)
+
+WITH row, u
+MATCH (r:Racket {modelID: 169})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket169)
+
+WITH row, u
+MATCH (r:Racket {modelID: 170})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket170)
+
+WITH row, u
+MATCH (r:Racket {modelID: 171})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket171)
+
+WITH row, u
+MATCH (r:Racket {modelID: 172})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket172)
+
+WITH row, u
+MATCH (r:Racket {modelID: 173})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket173)
+
+WITH row, u
+MATCH (r:Racket {modelID: 174})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket174)
+
+WITH row, u
+MATCH (r:Racket {modelID: 175})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket175)
+
+WITH row, u
+MATCH (r:Racket {modelID: 176})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket176)
+
+WITH row, u
+MATCH (r:Racket {modelID: 177})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket177)
+
+WITH row, u
+MATCH (r:Racket {modelID: 178})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket178)
+
+WITH row, u
+MATCH (r:Racket {modelID: 179})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket179)
+
+WITH row, u
+MATCH (r:Racket {modelID: 180})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket180)
+
+WITH row, u
+MATCH (r:Racket {modelID: 181})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket181)
+
+WITH row, u
+MATCH (r:Racket {modelID: 182})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket182)
+
+WITH row, u
+MATCH (r:Racket {modelID: 183})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket183)
+
+WITH row, u
+MATCH (r:Racket {modelID: 184})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket184)
+
+WITH row, u
+MATCH (r:Racket {modelID: 185})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket185)
+
+WITH row, u
+MATCH (r:Racket {modelID: 186})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket186)
+
+WITH row, u
+MATCH (r:Racket {modelID: 187})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket187)
+
+WITH row, u
+MATCH (r:Racket {modelID: 188})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket188)
+
+WITH row, u
+MATCH (r:Racket {modelID: 189})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket189)
+
+WITH row, u
+MATCH (r:Racket {modelID: 190})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket190)
+
+WITH row, u
+MATCH (r:Racket {modelID: 191})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket191)
+
+WITH row, u
+MATCH (r:Racket {modelID: 192})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket192)
+
+WITH row, u
+MATCH (r:Racket {modelID: 193})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket193)
+
+WITH row, u
+MATCH (r:Racket {modelID: 194})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket194)
+
+WITH row, u
+MATCH (r:Racket {modelID: 195})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket195)
+
+WITH row, u
+MATCH (r:Racket {modelID: 196})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket196)
+
+WITH row, u
+MATCH (r:Racket {modelID: 197})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket197)
+
+WITH row, u
+MATCH (r:Racket {modelID: 198})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket198)
+
+WITH row, u
+MATCH (r:Racket {modelID: 199})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket199)
+
+WITH row, u
+MATCH (r:Racket {modelID: 200})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket200)
+
+WITH row, u
+MATCH (r:Racket {modelID: 201})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket201)
+
+WITH row, u
+MATCH (r:Racket {modelID: 202})
+MERGE (u)-[rt:RATES]->(r)
+SET rt.rating=toInteger(row.racket202)

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import babolat from '../../media/rackets/babolat.jpg';
 import wilson from '../../media/rackets/wilson.jpg';
 import tecnifibre from '../../media/rackets/tecnifibre.jpg';
@@ -10,51 +10,47 @@ import pro from '../../media/rackets/pro.jpg';
 import { Rating } from '@mui/material';
 
 
+export default function Card(props) {
+  //const [rate, setRate] = useState(null);
 
-class Card extends Component {
+  let imageDictionary = {
+    "Babolat": babolat,
+    "Wilson": wilson,
+    "Tecnifibre": tecnifibre,
+    "Head": head,
+    "Yonex": yonex,
+    "Dunlop": dunlop,
+    "Pro": pro
+  };
 
-    constructor(props){
+  let racketBrand = props.racket.brand.toLowerCase();
 
-      super(props);
+  function saveRating(newValue){
+    let newRatings = props.ratings;
+    newRatings[props.racket.modelID] = newValue;
+    console.log(newRatings);
+    props.updateRatings(newRatings);
+  }
 
-      this.state = {
-        imageDictionary: {
-          "Babolat": babolat,
-          "Wilson": wilson,
-          "Tecnifibre": tecnifibre,
-          "Head": head,
-          "Yonex": yonex,
-          "Dunlop": dunlop,
-          "Pro": pro
-        },
-        racketBrand: this.props.racket.brand.toLowerCase()
-      }
-
-    }
-    
-    render() {
-        return(
-          <div id="card-container" className="card mt-4">
-            <div className="card-header">
-              <h3>{this.props.racket.brand}</h3>
-              <span className="badge badge-pill ml-2 text-danger"> 
-                {this.props.racket.model} 
-              </span>
-            </div>
-            <div className="card-body">
-              <div className="racketImageContainer">
-                <img src={this.state.imageDictionary[this.props.racket.brand]} alt="racketImage"/>
-              </div>
-              <p>{this.props.racket.price}$</p>
-              <p>{this.props.racket.stringPattern} {this.props.racket.weight}g</p>
-              <p>{this.props.racket.length}in {this.props.racket.headSize}in2</p>
-            </div>
-            <div className="card-footer">
-              <Rating name={this.state.racketBrand} /*onChange={(event, newValue) => { setValue(newValue);}}*//>
-            </div>
-          </div>
-        );
-    }
+  return (
+    <div id="card-container" className="card mt-4">
+    <div className="card-header">
+      <h3>{props.racket.brand}</h3>
+      <span className="badge badge-pill ml-2 text-danger"> 
+        {props.racket.model} 
+      </span>
+    </div>
+    <div className="card-body">
+      <div className="racketImageContainer">
+        <img src={imageDictionary[props.racket.brand]} alt="racketImage"/>
+      </div>
+      <p>{props.racket.price}$</p>
+      <p>{props.racket.stringPattern} {props.racket.weight}g</p>
+      <p>{props.racket.length}in {props.racket.headSize}in2</p>
+    </div>
+    <div className="card-footer">
+      <Rating className={"rating-"+racketBrand} onChange={(event, newValue) => saveRating(newValue)}/*onChange={(event, newValue) => { props.setValue(racketBrand, newValue);}}*//>
+    </div>
+  </div>
+  )
 }
-
-export default Card;

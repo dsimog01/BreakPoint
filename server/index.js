@@ -1,16 +1,38 @@
 const neo4j = require('neo4j-driver');
 const express = require('express');
 const port = process.env.port || 3001;
+var bodyParser = require('body-parser');
 const app = express();
-const bcrypt = require('bcrypt');
-var { jStat } = require('jstat');
+var { jStat, create } = require('jstat');
+var jsonParser = bodyParser.json();
 
-const uri = 'neo4j+s://b97dd18a.databases.neo4j.io';
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'POST' | 'GET');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
+////////// -- NEO4J -- //////////
+const uri = 'neo4j+s://810f4585.databases.neo4j.io';
 const user = 'neo4j';
-const password = '2q11olPZezAyb_JCkcn0QvHlUiPy7qKRQhLpCGGK2b0';
+const password = 'UliD-L2_x9nE8czZXxOzi-s8bBVwwy2hDPL5CnaoZqk';
   
 const driver = neo4j.driver(uri, neo4j.auth.basic(user, password), { disableLosslessIntegers: true })
 const session = driver.session()
+
+////////// -- HTTP GET INFO FROM DB -- //////////
+
+app.get("/getHeadSizes", async (req, res) => {
+  let headSizes = await getHeadSizes(req.query.brand);
+  res.send(headSizes);
+});
+
+app.get("/getRacketBrands", async (req, res) => {
+
+  res.json({message: JSON.stringify(await getRacketBrands())});
+
+});
 
 app.get("/getRackets", (req, res) => {
   let query = `MATCH (r:Racket)
@@ -24,19 +46,91 @@ app.get("/getRatedRackets", (req, res) => {
   });
 });
 
-app.get("/getRaters", (req, res) => {
-  getRaters().then(function(result){
-    console.log(result);
-  });
+app.get("/getContentRecommendation", async (req, res) => {
+  let contentRecommendation = await getContentRecommendation(req.query.currentUser);
+  //TODO  
+  res.send(contentRecommendation);
 });
 
-async function getRaters() {
+app.get("/getCollaborativeRecommendation", async (req, res) => {
+  let collaborativeRecommendation = await getCollaborativeRecommendation(req.query.currentUser);
+  //TODO
+  res.send(collaborativeRecommendation);
+});
 
-  let query = `MATCH (r:Racket), (u:User)
-              WHERE (u)-[:RATED]->(r)
-              RETURN u`;
+app.post("/postRacketRatings", jsonParser, async (req,res) => {
+  let ratings = req.body;
 
-  return getFromDB(query);
+  let modelIDs = Object.keys(ratings);
+  modelIDs = modelIDs.map((x) => {return parseInt(x, 10)});
+  let ratingValues = Object.values(ratings);
+  ratingValues = ratingValues.map((x) => {return parseInt(x, 10)});
+  let username = req.query.username.split("@")[0];
+
+  await saveRacketRatings(username, modelIDs, ratingValues);
+  res.send('');
+});
+
+//DELETE THIS
+app.get("/getTest", async (req, res) => {
+  console.log("test");
+  res.send("OK");
+});
+
+////////// -- QUERIES FOR DB -- //////////
+async function saveRacketRatings(username, modelIDs, ratings){
+  saveRatings(username, modelIDs, ratings, "Racket");
+}
+
+async function saveStringRatings(username, modelIDs, ratings){
+  saveRatings(username, modelIDs, ratings, "String");
+}
+
+async function saveRatings(username, modelIDs, ratings, type) {
+  let model, rating, query;
+  if(!(await userExists(username))){
+    await createUser(username);
+  }
+
+  for(let i = 0; i < modelIDs.length; i++){
+    model = modelIDs[i];
+    rating = ratings[i];
+    query = `MATCH (r:${type}), (u:User)
+            WHERE r.modelID =toInteger('${model}') AND u.username = '${username}'
+            MERGE (u)-[:RATES {rating: toInteger('${rating}')}]->(r)`;
+    await updateDB(query);
+  }
+}
+
+async function createUser(username) {
+  let query = `CREATE (u:User {username: '${username}'})`;
+  return await updateDB(query);
+}
+
+async function userExists(username){
+  let query = `MATCH (u:User)
+              WHERE u.username = '${username}'
+              RETURN COUNT(u)`;
+
+  let count = (await getFromDB(query))[0]._fields[0];
+
+  return (count!=0);
+}
+
+async function getAllHeadSizes(){
+  let query = `MATCH (d:Dimension)
+  WHERE d.headSize_in2 IS NOT NULL
+  RETURN DISTINCT d.headSize_in2 ORDER BY d.headSize_in2`;
+
+  let result = await getFromDB(query);
+
+  let headSizes = [];
+
+  result.forEach(head => {
+    headSizes.push(head._fields[0]);
+  });
+
+  return headSizes;
 }
 
 async function getRatedRackets() {
@@ -48,61 +142,224 @@ async function getRatedRackets() {
   return getFromDB(query);
 }
 
-app.get("/getCollabTable", async (req, res) => {
-  let collabTable = await getCollabTable();
-  console.log(collabTable);
-});
+async function getAllRatings(){
+  let query = `MATCH (u:User)-[rt:RATES]->(r:Racket)
+              RETURN u,rt,r ORDER BY u.username`;
 
-app.get("/getUsersCorrelation", async (req, res) => {
-  let mainUserID = req.query.mainUserID;
-  let collabTable = await getCollabTable();
-  let correlations = await getUsersCorrelation(mainUserID, collabTable);
-  console.log(correlations);
-  res.send(correlations);
-});
+  return getFromDB(query);
+}
 
-async function getUsersCorrelation(mainUserID, collabTable){
+async function getNumberOfRackets() {
+
+  let query = `MATCH (r:Racket)
+              RETURN COUNT(r)`;
+
+  return getFromDB(query);
+}
+
+async function getNumberOfUsers() {
   
-  let tmp = [], correlations = [];
-  let correlation;
+    let query = `MATCH (u:User)
+                RETURN COUNT(u)`;
+  
+    return getFromDB(query);
+}
 
+async function getRacketBrands() {
 
-  for(let i = 0; i < collabTable.length; i++){
+  let query = `MATCH (r:Racket)-[:IS_OF_BRAND]->(b:Brand)
+              RETURN DISTINCT b.brandName`;
 
-    correlation = [i+1, jStat.corrcoeff(collabTable[mainUserID-1], collabTable[i])];
-    tmp.push(correlation);
+  let result = await getFromDB(query);
+
+  let brands = [];
+
+  result.forEach(function(brand){
+    brands.push(brand._fields[0]);
+  });
+
+  return brands;
+}
+
+async function getHeadSizes(brand) {
+  
+    let query = `MATCH (b:Brand)<-[:IS_OF_BRAND]-(r:Racket)-[:HAS_DIMENSIONS]->(d:Dimension)
+    WHERE b.brandName = '${brand}' AND d.headSize_in2 IS NOT NULL
+    RETURN d.headSize_in2`;
+  
+    return getFromDB(query);
+}
+
+async function getContentProperties(){
+
+    let query = `MATCH (d:Dimension)<-[:HAS_DIMENSIONS]-(r:Racket)-[:IS_OF_BRAND]->(b:Brand)
+    RETURN r.modelID, d.weightUnstrung_g, d.headSize_in2, r.flex, r.stringPattern_VxH, r.price_Dol, b.brandName ORDER BY r.modelID`;
+  
+    return await getFromDB(query);
   }
 
-  correlations = [arrayColumn(tmp, 0), arrayColumn(tmp, 1)];
+async function getUserRatings(user) {
+    
+  let query = `MATCH (u:User {username: "${user}"})-[rt:RATES]->(r:Racket)
+  RETURN r.modelID, rt.rating ORDER BY r.modelID`;
+
+  return await getFromDB(query);
+
+}
+
+async function getAllPatterns(){
+    
+  let query = `MATCH (r:Racket)
+  RETURN DISTINCT r.stringPattern_VxH`;
+
+  let result = await getFromDB(query);
+
+  let patterns = [];
+
+  result.forEach(function(pattern){
+    patterns.push(pattern._fields[0]);
+  });
+
+  return patterns;
+}
+
+async function getUsernamesList(){
+  let query = `MATCH (u:User)
+              RETURN DISTINCT u.username ORDER BY u.username`;
+  
+  let result = await getFromDB(query);
+
+  let usernames = [];
+
+  result.forEach(function(username){
+    usernames.push(username._fields[0]);
+  });
+
+  return usernames;
+}
+
+////////// -- UNIVERSAL QUERY -- //////////
+async function getFromDB(query){
+
+  let result = await session.readTransaction(tx =>
+    tx.run(query) 
+  );
+
+  return result.records;
+}
+
+async function updateDB(query){
+
+  let result = await session.writeTransaction(tx =>
+    tx.run(query) 
+  );
+
+  return result;
+}
+
+////////// -- COLLABORATIVE ALGORITHM -- //////////
+async function getCollaborativeRecommendation(currentUser){
+  let usernamesList = await getUsernamesList();
+  let collabTable = await getCollabTable(usernamesList);
+  let similarUsers = await getXMostSimilarUsers(usernamesList, currentUser, collabTable, 4);
+  let recommendations = getCollaborativeRecommendationRank(collabTable, currentUser, usernamesList, similarUsers);
+  let bestRackets = getXMostSimilarRackets(recommendations, 4);
+}
+
+function getXMostSimilarRackets(recommendations, x){
+  //Array that contains modelIDs of the best x recommended rackets
+  let mostSimilarRackets = [];
+  let recommendationsCopy = recommendations.slice();
+  let maxValue, index;
+
+  for (let i = 0; i < x; i++) {
+    maxValue = Math.max.apply(null, recommendationsCopy[1]);
+    index = recommendationsCopy[1].indexOf(maxValue);
+    mostSimilarRackets.push(recommendationsCopy[0][index]);
+    recommendationsCopy[0].splice(index, 1);
+    recommendationsCopy[1].splice(index, 1);
+  }
+
+  return mostSimilarRackets;
+}
+
+function getCollaborativeRecommendationRank(collabTable, currentUser, usernamesList, similarUsers){
+  let recommendations = [[],[]];//[0] = modelID, [1] = rating
+  let currentUserAverage = getAverage(collabTable[usernamesList.indexOf(currentUser)]);
+
+  for(let i=0; i<collabTable[0].length; i++){
+
+    if(collabTable[usernamesList.indexOf(currentUser)][i] == 0){
+
+      let numerator = 0;
+      let denominator = 0;
+
+      for(let v=0; v<similarUsers[0].length; v++){
+        let vRatingj = collabTable[usernamesList.indexOf(similarUsers[0][v])][i];
+        let vAverage = getAverage(collabTable[usernamesList.indexOf(similarUsers[0][v])]);
+        let correlationToV = similarUsers[1][v];
+        numerator += correlationToV * (vRatingj - vAverage);
+        denominator += Math.abs(correlationToV);
+      }
+      recommendations[0].push(i+1);
+      recommendations[1].push(currentUserAverage + (numerator/denominator));
+    }
+  }
+
+  return recommendations;
+
+}
+
+function getAverage(list){
+  let sum = 0, counter = 0;
+  for(let i = 0; i < list.length; i++){
+    if(list[i] != 0){
+      sum += list[i];
+      counter++;
+    }
+  }
+  return sum/counter;
+}
+
+async function getUsersCorrelation(usernamesList, currentUsername, collabTable){
+  
+  let correlations = [[],[]];
+  let userIndex = usernamesList.indexOf(currentUsername);
+
+  for(let i = 0; i < collabTable.length; i++){
+    correlations[0].push(usernamesList[i]);
+    //TODO omit 0s
+    correlations[1].push(jStat.corrcoeff(collabTable[userIndex], collabTable[i]));
+  }
 
   //Current user row deleted
-  correlations[0].splice(mainUserID-1, 1);
-  correlations[1].splice(mainUserID-1, 1);
+  correlations[0].splice(userIndex, 1);
+  correlations[1].splice(userIndex, 1);
 
   return correlations;
   
 }
 
-const arrayColumn = (array, n) => array.map(x => x[n]);
+async function getXMostSimilarUsers(usernamesList, currentUsername, collabTable, x){
 
-async function getXMostSimilarUsers(mainUserID, collabTable, x){
-
-  let correlations = await getUsersCorrelation(mainUserID, collabTable);
-  let similarUsers = [];
-  let maxValue, userID;
+  let correlations = await getUsersCorrelation(usernamesList, currentUsername, collabTable);
+  let similarUsers = [[],[]];
+  let maxValue, user, index;
 
   for (let i = 0; i < x; i++) {
     maxValue = Math.max.apply(null, correlations[1]);
-    userID = correlations[0][correlations[1].indexOf(maxValue)];
-    similarUsers.push(userID);
-    correlations[0].splice(userID-1, 1);
-    correlations[1].splice(correlations[1].indexOf(maxValue), 1);
+    user = correlations[0][correlations[1].indexOf(maxValue)];
+    similarUsers[0].push(user);
+    similarUsers[1].push(maxValue);
+    index = correlations[1].indexOf(maxValue);
+    correlations[0].splice(index, 1);
+    correlations[1].splice(index, 1);
   }
 
   return similarUsers;
 }
 
-//Delete this (test function)
+//DELETE THIS (test function)
 app.get("/getPrediction", async (req, res) => {
 
   let collabTable = [[3,5,2,0,0], [3.5,4,3,4.5,2], [5,2.5,5,2.5,5]];
@@ -130,18 +387,10 @@ function getPrediction(collabTable, user1, user2, racketID, correlations){
   return prediction;
 }
 
-app.get("/getSimilarUsers", async (req, res) => {
-  
-  let mainUserID = req.query.mainUserID;
-  let similarUsers = await getXMostSimilarUsers(mainUserID, await getCollabTable(), 2);
-  console.log(similarUsers);
-  res.send(similarUsers);
-  
-});
-
-async function getCollabTable() {
+async function getCollabTable(usernamesList) {
 
   let collabTable = [];
+  let username;
   
   let racketsNumber = (await getNumberOfRackets())[0].get(0);
   let usersNumber = (await getNumberOfUsers())[0].get(0);
@@ -150,14 +399,17 @@ async function getCollabTable() {
 
   let allRatings = await getAllRatings();
 
+  //collabTable rows ordered by username alphabetically
+
   allRatings.forEach(function(rating){
-    collabTable[rating._fields[0].properties.userID-1][rating._fields[2].properties.modelID-1] = rating._fields[1].properties.rating;
+    username = rating._fields[0].properties.username;
+    collabTable[usernamesList.indexOf(username)][rating._fields[2].properties.modelID-1] = rating._fields[1].properties.rating;
   });
 
   return collabTable;
 }
 
-function putZeros(collabTable, usersNumber, racketsNumber){
+function putZeros(table, usersNumber, racketsNumber){
 
   let userRatings = [];
 
@@ -167,95 +419,200 @@ function putZeros(collabTable, usersNumber, racketsNumber){
 
   for(let i = 0; i < usersNumber; i++){
 
-    collabTable.push(userRatings.slice());
+    table.push(userRatings.slice());
   }
 }
 
+////////// -- CONTENT ALGORITHM -- //////////
+async function getContentTable(currentUser) {
 
-async function getAllRatings(){
-  let query = `MATCH (u:User)-[rt:RATED]->(r:Racket)
-              RETURN u,rt,r`;
+  let contentTable = [];
 
-  return getFromDB(query);
-}
+  let racketProperties = await getContentProperties();
 
-async function getNumberOfRackets() {
+  let weights = [220,230,240,250,260,270,280,290,300,310,320,330];
+  let headSizes = await getAllHeadSizes();
+  let flexValues = [45, 50, 55, 60, 65, 70, 75];
+  let patterns = await getAllPatterns();
+  let prices = [80, 100, 120, 140, 160, 180, 200, 220, 240];
+  let brands = await getRacketBrands();
 
-  let query = `MATCH (r:Racket)
-              RETURN COUNT(r)`;
-
-  return getFromDB(query);
-}
-
-async function getNumberOfUsers() {
+  let headers = ["modelID"].concat(weights).concat(headSizes).concat(flexValues).concat(patterns).concat(prices).concat(brands).concat(["rating"]);
   
-    let query = `MATCH (u:User)
-                RETURN COUNT(u)`;
+  let ratings = await getUserRatings(currentUser);
+
+  contentTable.push(headers);
+
+  racketProperties.forEach(function(racket){
   
-    return getFromDB(query);
-}
+    let row = [];
 
-async function getRacketBrands() {
+    row.push(racket._fields[0]);
 
-  let query = `MATCH (r:Racket)-[:IS_OF_BRAND]->(b:Brand)
-              RETURN DISTINCT b.brandName`;
+    weights.forEach(function(weight){
+      if(racket._fields[1] >= weight && racket._fields[1] < weight+10){
+        row.push(3);
+      }else{
+        row.push(0);
+      }
+    });
 
-  return getFromDB(query);
-}
+    headSizes.forEach(function(size){
+      if(racket._fields[2] == size){
+        row.push(1);
+      }else{
+        row.push(0);
+      }
+    });
 
-async function getHeadSizes(brand) {
-  
-    let query = `MATCH (b:Brand)<-[:IS_OF_BRAND]-(r:Racket)-[:HAS_DIMENSIONS]->(d:Dimension)
-    WHERE b.brandName = '${brand}' AND d.headSize_in2 IS NOT NULL
-    RETURN d.headSize_in2`;
-  
-    return getFromDB(query);
-}
+    flexValues.forEach(function(flex){
+      if(racket._fields[3] >= flex && racket._fields[3] < flex+5){
+        row.push(1);
+      }else{
+        row.push(0);
+      }
+    });
 
+    patterns.forEach(function(pattern){
+      if(racket._fields[4] == pattern){
+        row.push(2);
+      }else{
+        row.push(0);
+      }
+    });
 
-async function getFromDB(query){
-
-  let result = await session.readTransaction(tx =>
-    tx.run(query) 
-  );
-
-  session.close();
-
-  return result.records;
-}
-
-async function getRacketsRatedByUser(username) {
-
-  let query = `MATCH (u:User)-[:RATED]->(r:Racket)
-              WHERE u.username = '${username}'
-              RETURN r`;
-
-  return getFromDB(query);
-}
-
-app.get("/getRacketsRatedByUser/", async (req, res) => {
-  let rackets = await getRacketsRatedByUser(req.query.username);
-  console.log(rackets);
-});
-
-app.get("/getRacketBrands", (req, res) => {
-  getRacketBrands().then(brands => {
-  
-    let brandsArray = [];
+    prices.forEach(function(price){
+      if(racket._fields[5] >= price && racket._fields[5] < price+20){
+        row.push(2);
+      }else{
+        row.push(0);
+      }
+    });
 
     brands.forEach(function(brand){
-      brandsArray.push(brand._fields[0]);
+      if(racket._fields[6] == brand){
+        row.push(1);
+      }else{
+        row.push(0);
+      }
     });
-  
-    res.json({message: JSON.stringify(brandsArray)});
+
+
+    //row.push(racket._fields[7]);
+    row.push(0);
+    contentTable.push(row);
   });
 
+  ratings.forEach(function(rating){
+    contentTable[rating._fields[0]][contentTable[0].length-1] = rating._fields[1];
+  });
+
+  return contentTable;
+}
+
+async function getContentRecommendation(user){
+  let profile, frecuencies;
+  let contentTable = await getContentTable(user);
+  let reducedTable = reduceTableToUserRatings(contentTable);
+  multiplyFeaturesByRating(reducedTable);
+  [profile, frecuencies] = getUserProfile(reducedTable);
+  let normalizedProfile = normalizeProfile(profile, frecuencies);
+  let recommendedRackets = getRecommendation(normalizedProfile, contentTable);
+  return getXMostSimilarRackets(recommendedRackets, 4);
+}
+
+function getRecommendation(normalizedProfile, contentTable){
+  let similarityTable = [[],[]]; //modelID, similarity
+  let tmpRow = [];
+  let numerator, root1, root2;
+  
+contentTable.forEach(function(row){
+  if(row[row.length-1] == 0){
+    tmpRow = row.slice(1, row.length-1);
+    numerator = 0;
+    root1 = 0;
+    root2 = 0;
+
+    for(let i = 0; i < tmpRow.length; i++){
+      numerator += tmpRow[i] * normalizedProfile[1][i];
+      root1 += Math.pow(tmpRow[i], 2);
+      root2 += Math.pow(normalizedProfile[1][i], 2);
+    }
+
+    similarityTable[0].push(row[0]);
+    similarityTable[1].push(numerator / ((Math.sqrt(root1) * Math.sqrt(root2))));
+  }
 });
 
-app.get("/getHeadSizes", async (req, res) => {
-  let headSizes = await getHeadSizes(req.query.brand);
-  res.send(headSizes);
-});
+  return similarityTable;
+
+}
+
+function normalizeProfile(profile, frecuencies){
+  for(let i = 0; i < profile[1].length; i++){
+    profile[1][i] = profile[1][i]/5*frecuencies[i];
+  }
+
+  return profile;
+}
+
+function getUserProfile(table){
+  let profile = [];
+  let row = [];
+  let frecuencies = [];
+  let headers = table[0].slice(1, table[0].length-1);
+  profile.push(headers);
+  for(let j = 1; j < table[0].length-1; j++){
+    let sum = 0;
+    let counter = 0;
+    for(let i = 1; i < table.length; i++){
+      if(table[i][j] != 0){
+        sum += table[i][j];
+        counter++;
+      }
+    }
+
+    frecuencies.push(counter/(table.length-1));
+
+    if(counter != 0){
+      row.push(sum/counter);
+    }else{
+      row.push(0);
+    }
+  }
+  profile.push(row);
+  return [profile, frecuencies];
+}
+
+function multiplyFeaturesByRating(table){
+  //i==0 -> headers
+  for(let i = 1; i < table.length; i++){
+    for(let j = 1; j < table[i].length-1; j++){
+      table[i][j] = table[i][j] * table[i][table[0].length-1];
+    }
+  }
+}
+
+function reduceTableToUserRatings(contentTable){
+  
+  let reducedTable = [];
+
+  contentTable.forEach(function(row){
+
+    if(row[0] == "modelID"){
+      reducedTable.push(row.slice());
+
+      //Last column is rating
+    }else if(row[row.length-1] > 0){
+      reducedTable.push(row.slice());
+    }
+  });
+
+  return reducedTable;
+}
+
+
+
 
 
 

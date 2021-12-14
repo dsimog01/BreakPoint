@@ -26,6 +26,7 @@ function App() {
     )
   });*/ //Se recorre el array, sabiendo el valor actual y el indice
 
+
   return (
 
     <div className="App">
