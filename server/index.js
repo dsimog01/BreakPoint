@@ -4,6 +4,7 @@ const port = process.env.port || 3001;
 var bodyParser = require('body-parser');
 const app = express();
 var { jStat, create } = require('jstat');
+const { compareSync } = require('bcrypt');
 var jsonParser = bodyParser.json();
 
 app.use((req, res, next) => {
@@ -24,14 +25,60 @@ const session = driver.session()
 ////////// -- HTTP GET INFO FROM DB -- //////////
 
 app.get("/getHeadSizes", async (req, res) => {
-  let headSizes = await getHeadSizes(req.query.brand);
-  res.send(headSizes);
+
+  try{
+    let headSizes = await getHeadSizes(req.query.brand);
+    res.json({message: JSON.stringify(headSizes)});
+  }catch(err){
+    console.log(err);
+  }
+
+  //res.send(headSizes);
 });
 
 app.get("/getRacketBrands", async (req, res) => {
 
-  res.json({message: JSON.stringify(await getRacketBrands())});
+  try{
+    let brands = await getRacketBrands();
 
+    res.json({message: JSON.stringify(brands)});
+  }catch(err){
+    console.log(err);
+  }
+
+});
+
+app.get("/getRacketLengths", async (req, res) => {
+  
+    try{
+      let lengths = await getRacketLengths(req.query.brand, req.query.headSize);
+      res.json({message: JSON.stringify(lengths)});
+    }catch(err){
+      console.log(err);
+    }
+  
+});
+
+app.get("/getRacketWeights", async (req, res) => {
+  
+    try{
+      let weights = await getRacketWeights(req.query.brand, req.query.headSize, req.query.length);
+      res.json({message: JSON.stringify(weights)});
+    }catch(err){
+      console.log(err);
+    }
+  
+});
+
+app.get("/setRacketRating", async (req, res) => {
+  try{
+    await saveRacketRaterRating(req.query.username, req.query.brand, req.query.headSize, req.query.length, req.query.weight, req.query.rating);
+    res.json({message: "Success"});
+  }catch(err){
+    console.log(err);
+    res.json({message: "Error"});
+
+  }
 });
 
 app.get("/getRackets", (req, res) => {
@@ -82,12 +129,6 @@ function getRequestArrays(ratings, userEmail){
   return [username, modelIDs, ratingValues];
 }
 
-//DELETE THIS
-app.get("/getTest", async (req, res) => {
-  console.log("test");
-  res.send("OK");
-});
-
 ////////// -- QUERIES FOR DB -- //////////
 async function saveRacketRatings(username, modelIDs, ratings){
   saveRatings(username, modelIDs, ratings, "Racket");
@@ -112,6 +153,26 @@ async function saveRatings(username, modelIDs, ratings, type) {
     await updateDB(query);
   }
 }
+
+async function saveRacketRaterRating(username, brand, headSize, length, weight, rating){
+  if(!(await userExists(username))){
+    await createUser(username);
+  }
+
+  console.log(brand);
+  console.log(headSize);
+  console.log(length);
+  console.log(weight);
+  console.log(rating);
+  console.log(username);
+
+  let query = `MATCH (b:Brand)<-[:IS_OF_BRAND]-(r:Racket)-[:HAS_DIMENSIONS]->(d:Dimension), (u:User)
+  WHERE b.brandName = '${brand}' AND d.headSize_in2 = toInteger('${headSize}') AND d.length_in = toInteger('${length}') AND d.weightUnstrung_g = toInteger('${weight}') AND u.username = '${username}'
+  MERGE (u)-[:RATES {rating: toInteger('${rating}')}]->(r)`;
+
+  return await updateDB(query);
+}
+
 
 async function createUser(username) {
   let query = `CREATE (u:User {username: '${username}'})`;
@@ -196,9 +257,50 @@ async function getHeadSizes(brand) {
   
     let query = `MATCH (b:Brand)<-[:IS_OF_BRAND]-(r:Racket)-[:HAS_DIMENSIONS]->(d:Dimension)
     WHERE b.brandName = '${brand}' AND d.headSize_in2 IS NOT NULL
-    RETURN d.headSize_in2`;
+    RETURN DISTINCT d.headSize_in2`;
   
-    return getFromDB(query);
+    let result = await getFromDB(query);
+    
+    let headSizes = [];
+
+    result.forEach(head => {
+      headSizes.push(head._fields[0]);
+    });
+
+    return headSizes;
+}
+
+async function getRacketLengths(brand, headSize){
+  let query = `MATCH (b:Brand)<-[:IS_OF_BRAND]-(r:Racket)-[:HAS_DIMENSIONS]->(d:Dimension)
+  WHERE b.brandName = '${brand}' AND d.headSize_in2 = toInteger('${headSize}') AND d.length_in IS NOT NULL
+  RETURN DISTINCT d.length_in`;
+
+  let result = await getFromDB(query);
+
+  let lengths = [];
+
+  result.forEach(length => {
+    lengths.push(length._fields[0]);
+  });
+
+  return lengths;
+
+}
+
+async function getRacketWeights(brand, headSize, length){
+  let query = `MATCH (b:Brand)<-[:IS_OF_BRAND]-(r:Racket)-[:HAS_DIMENSIONS]->(d:Dimension)
+  WHERE b.brandName = '${brand}' AND d.headSize_in2 = toInteger('${headSize}') AND d.length_in = toInteger('${length}') AND d.weightUnstrung_g IS NOT NULL
+  RETURN DISTINCT d.weightUnstrung_g`;
+
+  let result = await getFromDB(query);
+
+  let weights = [];
+
+  result.forEach(weight => {
+    weights.push(weight._fields[0]);
+  });
+
+  return weights;
 }
 
 async function getContentProperties(){
@@ -404,6 +506,7 @@ async function getCollabTable(usernamesList) {
   let username;
   
   let racketsNumber = (await getNumberOfRackets())[0].get(0);
+  //TODO serviria con usernamesList.length
   let usersNumber = (await getNumberOfUsers())[0].get(0);
 
   putZeros(collabTable, usersNumber, racketsNumber);

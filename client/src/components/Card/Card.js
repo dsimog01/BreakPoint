@@ -48,7 +48,7 @@ export default function Card(props) {
       <p>{props.racket.length}in {props.racket.headSize}in2</p>
     </div>
     <div className="card-footer">
-      <Rating className={"rating-"+racketBrand} onChange={(event, newValue) => saveRating(newValue)}/*onChange={(event, newValue) => { props.setValue(racketBrand, newValue);}}*//>
+      <Rating className={"rating-"+racketBrand} onChange={(event, newValue) => saveRating(newValue)}/>
     </div>
   </div>
   )

@@ -57,7 +57,7 @@ export default function RacketSelector(props) {
             <div className="container row">
                 {storedRackets}
             </div>
-            <button className="btn btn-dark mb-2" onClick={rateRackets}>Rate it</button>
+            <button className="btn btn-dark mb-2" onClick={rateRackets}>Rate them!</button>
             {error ? <Alert severity="error">You must log in!</Alert>: null}
             <RacketRater/>
         </div>
