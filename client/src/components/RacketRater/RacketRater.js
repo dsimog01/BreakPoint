@@ -149,7 +149,7 @@ export default function RacketRater() {
                 </div></center>
 
                 <button className="btn btn-dark mb-2" onClick={rateRacket}>Rate it!</button>
-                {error ? <Alert severity="error">You must log in!</Alert>: null}
+                {error ? <Alert severity="error" className="mt-2">You must log in!</Alert>: null}
 
             </div>
         </div>

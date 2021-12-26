@@ -94,14 +94,16 @@ app.get("/getRatedRackets", (req, res) => {
 });
 
 app.get("/getContentRecommendation", async (req, res) => {
-  let contentRecommendation = await getContentRecommendation(req.query.currentUser);
-  //TODO  
+  console.log(req.query.username + " has requested a content recommendation");
+  let contentRecommendation = await getContentRecommendation(req.query.username);
+  //Model IDs sent
   res.send(contentRecommendation);
 });
 
 app.get("/getCollaborativeRecommendation", async (req, res) => {
-  let collaborativeRecommendation = await getCollaborativeRecommendation(req.query.currentUser);
-  //TODO
+  console.log(req.query.username + " has requested a collaborative recommendation");
+  let collaborativeRecommendation = await getCollaborativeRecommendation(req.query.username);
+  //Model IDs sent
   res.send(collaborativeRecommendation);
 });
 
@@ -110,6 +112,16 @@ app.post("/postRacketRatings", jsonParser, async (req,res) => {
 
   await saveRacketRatings(username, modelIDs, ratingValues);
   res.send('');
+});
+
+app.post('/getRacketsDetails', jsonParser, async (req, res) => {
+  console.log(req.body);
+  let modelIDs = req.body;
+  let query = `MATCH (b:Brand)<-[:IS_OF_BRAND]-(r:Racket)-[:HAS_DIMENSIONS]->(d:Dimension)
+              WHERE r.modelID IN [${modelIDs}] AND r.flex IS NOT NULL
+              RETURN r.modelID, b.brandName, r.price_Dol, d.headSize_in2, d.length_in, r.stringPattern_VxH, d.weightUnstrung_g`;
+  let result = await getFromDB(query);
+  res.send(result);
 });
 
 app.post("/postStringRatings", jsonParser, async (req,res) => {
@@ -374,9 +386,10 @@ async function updateDB(query){
 async function getCollaborativeRecommendation(currentUser){
   let usernamesList = await getUsernamesList();
   let collabTable = await getCollabTable(usernamesList);
-  let similarUsers = await getXMostSimilarUsers(usernamesList, currentUser, collabTable, 4);
+  let similarUsers = await getXMostSimilarUsers(usernamesList, currentUser, collabTable, 3);
   let recommendations = getCollaborativeRecommendationRank(collabTable, currentUser, usernamesList, similarUsers);
-  let bestRackets = getXMostSimilarRackets(recommendations, 4);
+  let bestRackets = getXMostSimilarRackets(recommendations, 3);
+  return bestRackets;
 }
 
 function getXMostSimilarRackets(recommendations, x){
@@ -632,7 +645,7 @@ async function getContentRecommendation(user){
   [profile, frecuencies] = getUserProfile(reducedTable);
   let normalizedProfile = normalizeProfile(profile, frecuencies);
   let recommendedRackets = getRecommendation(normalizedProfile, contentTable);
-  return getXMostSimilarRackets(recommendedRackets, 4);
+  return getXMostSimilarRackets(recommendedRackets, 3);
 }
 
 function getRecommendation(normalizedProfile, contentTable){

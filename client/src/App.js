@@ -5,54 +5,33 @@ import Footer from './components/Footer/FooterPage';
 import RacketSelector from "./components/RacketSelector/RacketSelector";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import StringSelector from "./components/StringSelector/StringSelector";
+import RecommendationButton from "./components/RecommendationButton/RecommendationButton";
+import { useState } from "react";
+import RecommendedModels from "./components/RecommendedModels/RecommendedModels";
 
 function App() {
 
-  /*const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch("/getRacketBrands")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);*/
-
-  //const {addTodo, removeTodo} = TodoItemManager(this);
-
-  /*const storedTodos = this.state.todos.map((todo, i) => {
-    return (
-      <div className="col-md-4">
-        <Card todoItem={todo} onClickDelete={removeTodo.bind(this, i)}/>
-      </div>
-    )
-  });*/ //Se recorre el array, sabiendo el valor actual y el indice
-
+  const [recommendedModels, setRecommendedModels] = useState([]);
 
   return (
 
     <div className="App">
       <Navigation/> 
-      <RacketSelector/>    
-      <StringSelector/>
+      <div>
+        {recommendedModels.length===0 ?
+          <div className="rating">
+              <RacketSelector/>    
+              <StringSelector/>
+              <RecommendationButton setRecommendedModels={setRecommendedModels}/>
+          </div>
+        :
+          <div className="recommendation">
+            <RecommendedModels rackets={recommendedModels}/>
+          </div>
+        }
+      </div>
       <Footer/>
     </div>
-
-//<p>{!data ? "Loading..." : data}</p>
-
-
-    /*<div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{!data ? "Loading..." : data}</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>*/
   );
 }
 

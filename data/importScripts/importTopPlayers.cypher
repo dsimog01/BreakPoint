@@ -1,4 +1,4 @@
-LOAD CSV WITH HEADERS FROM 'http://spreding.online/racket-recommendation-system/data/formattedFiles/formattedTennisPlayers.csv' AS row
+LOAD CSV WITH HEADERS FROM 'http://81.43.174.98/racket-recommendation-system/data/formattedFiles/formattedTennisPlayers.csv' AS row
 WITH row 
 WHERE row.playerID IS NOT NULL
 MERGE (p:TopPlayer {
@@ -16,12 +16,6 @@ MERGE (st:PlayerStats {
         mgr_i: toFloat(row.mgr_i)
      })
 
-/*MERGE (d:Dimension {
-        length_in: row.racketLength_in,
-        weightStrung: row.racketWeight_g
-    })*/
-
-/*WITH p, d, row*/
 WITH p, row, st
 
 MATCH (s:String)
@@ -32,7 +26,6 @@ WHERE r.modelID = row.racketID
 
 MERGE (p)-[:USES_STRING]->(s)
 
-/*MERGE (r)-[:HAS_DIMENSIONS]->(d)*/
 
 MERGE (p)-[:USES_RACKET]->(r)
 

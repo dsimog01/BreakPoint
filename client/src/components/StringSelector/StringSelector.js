@@ -46,7 +46,7 @@ export default function StringSelector() {
               setError(true);
           }
   
-      };
+    };
 
     return(
         <div className="container mt-5 p-4 border rounded-3">
@@ -54,8 +54,8 @@ export default function StringSelector() {
             <div className="container row mb-3">
                 {storedStrings}
             </div>
-            <button className="btn btn-dark mb-2" onClick={rateStrings}>Rate it</button>
-            {error ? <Alert severity="error">You must log in!</Alert>: null}
+            <button className="btn btn-dark mb-2" onClick={rateStrings}>Rate them!</button>
+            {error ? <Alert severity="error" className="mt-2">You must log in!</Alert>: null}
         </div>
     );
 }

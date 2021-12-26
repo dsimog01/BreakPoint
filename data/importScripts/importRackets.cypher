@@ -1,4 +1,4 @@
-LOAD CSV WITH HEADERS FROM 'http://spreding.online/racket-recommendation-system/data/formattedFiles/formattedTennisRackets.csv' AS row
+LOAD CSV WITH HEADERS FROM 'http://81.43.174.98/racket-recommendation-system/data/formattedFiles/formattedTennisRackets.csv' AS row
 WITH row 
 WHERE row.modelID IS NOT NULL
 MERGE (r:Racket {

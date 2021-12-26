@@ -1,4 +1,4 @@
-LOAD CSV WITH HEADERS FROM 'http://spreding.online/racket-recommendation-system/data/formattedFiles/formattedUsers.csv' AS row
+LOAD CSV WITH HEADERS FROM 'http://81.43.174.98/racket-recommendation-system/data/formattedFiles/formattedUsers.csv' AS row
 WITH row 
 WHERE row.username IS NOT NULL
 MERGE (u:User {
