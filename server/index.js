@@ -141,6 +141,16 @@ function getRequestArrays(ratings, userEmail){
   return [username, modelIDs, ratingValues];
 }
 
+app.get("/getTopPlayersNames", async (req, res) => {
+  let query = `MATCH (tp:TopPlayer)
+              RETURN tp.playerName`;
+  let result = await getFromDB(query);
+
+  let names = result.map((player) => {return player._fields[0]});
+
+  res.send(names);
+});
+
 ////////// -- QUERIES FOR DB -- //////////
 async function saveRacketRatings(username, modelIDs, ratings){
   saveRatings(username, modelIDs, ratings, "Racket");

@@ -1,4 +1,4 @@
-LOAD CSV WITH HEADERS FROM 'http://81.43.174.98/racket-recommendation-system/data/formattedFiles/formattedTennisPlayers.csv' AS row
+LOAD CSV WITH HEADERS FROM 'http://81.43.174.98/BreakPoint/data/formattedFiles/formattedTennisPlayers.csv' AS row
 WITH row 
 WHERE row.playerID IS NOT NULL
 MERGE (p:TopPlayer {

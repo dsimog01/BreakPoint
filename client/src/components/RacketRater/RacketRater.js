@@ -25,7 +25,7 @@ export default function RacketRater() {
     const [error, setError] = useState(false);
     const { isAuthenticated, user } = useAuth0();
 
-    const {getRacketBrands, getHeadSizes, getRacketLengths, getRacketWeights, setRacketRating} = GetSelectValues(this);
+    const {getRacketBrands, getHeadSizes, getRacketLengths, getRacketWeights, setRacketRating} = GetSelectValues();
 
     async function setBrandOptions(){
 

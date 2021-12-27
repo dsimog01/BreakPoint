@@ -1,4 +1,4 @@
-LOAD CSV WITH HEADERS FROM 'http://81.43.174.98/racket-recommendation-system/data/formattedFiles/formattedTennisStrings.csv' AS row2
+LOAD CSV WITH HEADERS FROM 'http://81.43.174.98/BreakPoint/data/formattedFiles/formattedTennisStrings.csv' AS row2
 WITH row2
 WHERE row2.modelID IS NOT NULL
 MERGE (s:String {

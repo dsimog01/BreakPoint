@@ -1,4 +1,4 @@
-const GetSelectValues = (thisComponent) => {
+const GetSelectValues = () => {
 
     const getDataFromServer = (url) => {
         return fetch(url)
@@ -8,34 +8,31 @@ const GetSelectValues = (thisComponent) => {
     }
 
     const getHeadSizes = async (brand) => {
-        let data = await getDataFromServer("/getHeadSizes?brand=" + brand);
-        return data;
+        return await getDataFromServer("/getHeadSizes?brand=" + brand);
     }
 
     const getRacketBrands = async () => {
-        let data = await getDataFromServer("/getRacketBrands");
-        return data;
+        return await getDataFromServer("/getRacketBrands");
     }
 
     const getRacketLengths = async (brand, headSize) => {
-        let data = await getDataFromServer("/getRacketLengths?brand=" + brand + "&headSize=" + headSize);
-        return data;
+        return await getDataFromServer("/getRacketLengths?brand=" + brand + "&headSize=" + headSize);
     }
 
     const getRacketWeights = async (brand, headSize, length) => {
-        let data = await getDataFromServer("/getRacketWeights?brand=" + brand + "&headSize=" + headSize + "&length=" + length);
-        return data;
+        return await getDataFromServer("/getRacketWeights?brand=" + brand + "&headSize=" + headSize + "&length=" + length);
     }
 
     const setRacketRating = async(brand, headSize, length, weight, rating, username) => {
-
-        console.log(brand, headSize, length, weight, rating, username);
-
         await getDataFromServer("/setRacketRating?brand=" + brand + "&headSize=" + headSize + "&length=" + length + "&weight=" + weight + "&rating=" + rating + "&username=" + username);
         return true;
     }
+
+    const getTopPlayers = async () => {
+        return await getDataFromServer("/getTopPlayersNames");
+    }
     
-    return {getHeadSizes, getRacketBrands, getRacketLengths, getRacketWeights, setRacketRating};
+    return {getHeadSizes, getRacketBrands, getRacketLengths, getRacketWeights, setRacketRating, getTopPlayers};
     
 }
 
