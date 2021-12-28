@@ -96,15 +96,43 @@ app.get("/getRatedRackets", (req, res) => {
 app.get("/getContentRecommendation", async (req, res) => {
   console.log(req.query.username + " has requested a content recommendation");
   let contentRecommendation = await getContentRecommendation(req.query.username);
+  let bestRackets = getXMostSimilar(contentRecommendation, 3);
   //Model IDs sent
-  res.send(contentRecommendation);
+  res.send(bestRackets);
 });
 
 app.get("/getCollaborativeRecommendation", async (req, res) => {
   console.log(req.query.username + " has requested a collaborative recommendation");
   let collaborativeRecommendation = await getCollaborativeRecommendation(req.query.username);
+  let bestRackets = getXMostSimilar(collaborativeRecommendation, 3);
   //Model IDs sent
-  res.send(collaborativeRecommendation);
+  res.send(bestRackets);
+});
+
+app.get("/getHybridRecommendation", async (req, res) => {
+  console.log(req.query.username + " has requested a hybrid recommendation");
+  let hybridRecommendation = await getHybridRecommendation(req.query.username);
+  let bestRackets = getXMostSimilar(hybridRecommendation, 3);
+  //Model IDs sent
+  res.send(bestRackets);
+});
+
+app.get("/getStringRecommendation", async (req, res) => {
+
+  let username = req.query.username;
+  let selectedPlayerName = req.query.selectedPlayer;
+  let selectedRacketID = parseInt(req.query.selectedRacketID);
+  let userWeight = parseInt(req.query.userWeight);
+  let userHeight = parseFloat(req.query.userHeight);
+
+  console.log(username + " has requested a string recommendation");
+
+  let stringsUsedWithSelectedRacket = await getStringsUsedWithRacket(selectedRacketID);
+
+  let stringRecommendation = await getStringRecommendation(username, selectedPlayerName, userHeight, userWeight, stringsUsedWithSelectedRacket);
+  let bestStrings = getXMostSimilar(stringRecommendation, 3);
+  //Model IDs sent
+  res.send(bestStrings);
 });
 
 app.post("/postRacketRatings", jsonParser, async (req,res) => {
@@ -142,13 +170,8 @@ function getRequestArrays(ratings, userEmail){
 }
 
 app.get("/getTopPlayersNames", async (req, res) => {
-  let query = `MATCH (tp:TopPlayer)
-              RETURN tp.playerName`;
-  let result = await getFromDB(query);
 
-  let names = result.map((player) => {return player._fields[0]});
-
-  res.send(names);
+  res.send(await getTopPlayersNames());
 });
 
 ////////// -- QUERIES FOR DB -- //////////
@@ -227,6 +250,100 @@ async function getAllHeadSizes(){
   return headSizes;
 }
 
+async function getStringsUsedWithRacket(racketID){
+  let query = `MATCH (r:Racket)<-[:USES_RACKET]-(tp:TopPlayer)-[:USES_STRING]->(s:String)
+              WHERE r.modelID = toInteger('${racketID}')
+              RETURN DISTINCT s.modelID`;
+
+  let result = await getFromDB(query); 
+
+  let strings = [];
+
+  result.forEach(string => {
+    strings.push(string._fields[0]);
+  });
+
+  return strings;
+}
+
+async function getAllStringCompositions(){
+  let query = `MATCH (s:String)
+  RETURN DISTINCT s.composition`;
+
+  let result = await getFromDB(query);
+
+  let compositions = [];
+
+  result.forEach(composition => {
+    compositions.push(composition._fields[0]);
+  });
+
+  return compositions;
+}
+
+async function getAllGauges(){
+  let query = `MATCH (s:String)-[:HAS_DIMENSIONS]->(d:Dimension)
+              RETURN DISTINCT d.gauge_mm`;
+
+  let result = await getFromDB(query);
+
+  let gauges = [];
+
+  result.forEach(gauge => {
+    gauges.push(gauge._fields[0]);
+  });
+
+  return gauges;
+}
+
+async function getPlayerStrings(){
+  let query = `MATCH (tp:TopPlayer)-[:USES_STRING]->(s:String)
+  RETURN s.modelID, tp.playerName ORDER BY s.modelID`;
+
+  let result = await getFromDB(query);
+
+  let stringsCount = await getStringsCount();
+  let stringDict = {};
+
+  for (let i=1; i<=stringsCount; i++){
+    stringDict[i] = [];
+  }
+  
+  result.forEach(stringPlayer => {
+    stringDict[stringPlayer._fields[0]].push(stringPlayer._fields[1]);
+  });
+
+  return stringDict;
+}
+
+async function getTopPlayersComplexionData(){
+  let query = `MATCH (tp:TopPlayer)
+  RETURN tp.playerName, tp.height_m, tp.weight_kg`;
+
+  let result = await getFromDB(query);
+
+  let topPlayers = [];
+
+  result.forEach(topPlayer => {
+    topPlayers.push({
+      playerName: topPlayer._fields[0],
+      height: topPlayer._fields[1],
+      weight: topPlayer._fields[2]
+    });
+  });
+
+  return topPlayers;
+}
+
+async function getStringsCount(){
+  let query = `MATCH (s:String)
+  RETURN COUNT(s)`;
+
+  let result = await getFromDB(query);
+
+  return result[0]._fields[0];
+}
+
 async function getRatedRackets() {
 
   let query = `MATCH (r:Racket), (u:User)
@@ -273,6 +390,37 @@ async function getRacketBrands() {
   });
 
   return brands;
+}
+
+async function getStringBrands() {
+
+  let query = `MATCH (s:String)-[:IS_OF_BRAND]->(b:Brand)
+              RETURN DISTINCT b.brandName`;
+
+  let result = await getFromDB(query);
+
+  let brands = [];
+
+  result.forEach(function(brand){
+    brands.push(brand._fields[0]);
+  });
+
+  return brands;
+}
+
+async function getAllStringTypes(){
+  let query = `MATCH (s:String)
+  RETURN DISTINCT s.type`;
+
+  let result = await getFromDB(query);
+
+  let types = [];
+
+  result.forEach(function(type){
+    types.push(type._fields[0]);
+  });
+
+  return types;
 }
 
 async function getHeadSizes(brand) {
@@ -325,18 +473,43 @@ async function getRacketWeights(brand, headSize, length){
   return weights;
 }
 
+async function getTopPlayersNames(){
+  let query = `MATCH (tp:TopPlayer)
+              RETURN tp.playerName`;
+  
+  let result = await getFromDB(query);
+
+  return result.map((player) => {return player._fields[0]});
+}
+
 async function getContentProperties(){
 
     let query = `MATCH (d:Dimension)<-[:HAS_DIMENSIONS]-(r:Racket)-[:IS_OF_BRAND]->(b:Brand)
     RETURN r.modelID, d.weightUnstrung_g, d.headSize_in2, r.flex, r.stringPattern_VxH, r.price_Dol, b.brandName ORDER BY r.modelID`;
   
     return await getFromDB(query);
-  }
+}
+
+async function getStringContentProperties(){
+  let query = `MATCH (d:Dimension)<-[:HAS_DIMENSIONS]-(s:String)-[:IS_OF_BRAND]->(b:Brand)
+  RETURN s.modelID, b.brandName, s.modelName, s.type, s.composition, d.gauge_mm ORDER BY s.modelID`;
+
+  return await getFromDB(query);
+}
 
 async function getUserRatings(user) {
     
   let query = `MATCH (u:User {username: "${user}"})-[rt:RATES]->(r:Racket)
   RETURN r.modelID, rt.rating ORDER BY r.modelID`;
+
+  return await getFromDB(query);
+
+}
+
+async function getUserStringRatings(user) {
+    
+  let query = `MATCH (u:User {username: "${user}"})-[rt:RATES]->(s:String)
+  RETURN s.modelID, rt.rating ORDER BY s.modelID`;
 
   return await getFromDB(query);
 
@@ -397,12 +570,10 @@ async function getCollaborativeRecommendation(currentUser){
   let usernamesList = await getUsernamesList();
   let collabTable = await getCollabTable(usernamesList);
   let similarUsers = await getXMostSimilarUsers(usernamesList, currentUser, collabTable, 3);
-  let recommendations = getCollaborativeRecommendationRank(collabTable, currentUser, usernamesList, similarUsers);
-  let bestRackets = getXMostSimilarRackets(recommendations, 3);
-  return bestRackets;
+  return getCollaborativeRecommendationRank(collabTable, currentUser, usernamesList, similarUsers);
 }
 
-function getXMostSimilarRackets(recommendations, x){
+function getXMostSimilar(recommendations, x){
   //Array that contains modelIDs of the best x recommended rackets
   let mostSimilarRackets = [];
   let recommendationsCopy = recommendations.slice();
@@ -634,9 +805,7 @@ async function getContentTable(currentUser) {
       }
     });
 
-
-    //row.push(racket._fields[7]);
-    row.push(0);
+    row.push(0); //Rating added later
     contentTable.push(row);
   });
 
@@ -654,8 +823,7 @@ async function getContentRecommendation(user){
   multiplyFeaturesByRating(reducedTable);
   [profile, frecuencies] = getUserProfile(reducedTable);
   let normalizedProfile = normalizeProfile(profile, frecuencies);
-  let recommendedRackets = getRecommendation(normalizedProfile, contentTable);
-  return getXMostSimilarRackets(recommendedRackets, 3);
+  return getRecommendation(normalizedProfile, contentTable);
 }
 
 function getRecommendation(normalizedProfile, contentTable){
@@ -748,10 +916,163 @@ function reduceTableToUserRatings(contentTable){
   return reducedTable;
 }
 
+////////// -- CONTENT ALGORITHM -- //////////
+async function getHybridRecommendation(user){
+  let contetRec = await getContentRecommendation(user);
+  let collabRec = await getCollaborativeRecommendation(user);
+  let hybridRec = mergeRecommendations(contetRec, collabRec);
+  return hybridRec;
+}
 
+function mergeRecommendations(contentRec, collabRec){
+  let hybridRec = [[],[]];
 
+  let modelIDs = [];
 
+  contentRec[0].forEach(function(contentID){
+    if(collabRec[0].includes(contentID)){
+      modelIDs.push(contentID);
+    }
+  });
 
+  modelIDs.forEach(function(modelID){
+
+    let contentRating = contentRec[1][contentRec[0].indexOf(modelID)];
+    let collabRating = collabRec[1][collabRec[0].indexOf(modelID)];
+
+    hybridRec[0].push(modelID);
+    hybridRec[1].push(contentRating*0.6 + collabRating*0.4);
+  });
+
+  return hybridRec;
+}
+
+////////// -- STRING ALGORITHM -- //////////
+async function getStringRecommendation(currentUser, selectedTopPlayer, userHeight, userWeight, suitableStrings){
+  let profile, frecuencies;
+  let contentTable = await getStringContentTable(currentUser);
+  let reducedTable = reduceTableToUserRatings(contentTable);
+  multiplyFeaturesByRating(reducedTable);
+  [profile, frecuencies] = getUserProfile(reducedTable);
+  let normalizedProfile = normalizeProfile(profile, frecuencies);
+  let recommendation = getRecommendation(normalizedProfile, contentTable);
+  let similarPlayers = await getSimilarPlayers(userHeight, userWeight);
+  await addPlayerBonus(recommendation, selectedTopPlayer, similarPlayers, suitableStrings);
+  return recommendation;
+}
+
+async function getSimilarPlayers(userHeight, userWeight){
+  let topPlayersData = await getTopPlayersComplexionData();
+
+  let similarPlayers = [];
+
+  topPlayersData.forEach(function(player){
+    if(getEuclideanDistance(userHeight, userWeight, player.height, player.weight) < 0.5){ //TODO CAMBIAR UMBRAL
+      similarPlayers.push(player);
+    }
+  });
+
+  return similarPlayers;
+}
+
+function getEuclideanDistance(x1, y1, x2, y2){
+  return Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2));
+}
+
+async function addPlayerBonus(recommendations, selectedTopPlayer, similarPlayers, suitableStrings){
+  let playerStrings = await getPlayerStrings();
+
+  //playerStrings[stringID]=players who play with that string
+
+  recommendations[0].forEach(function(recommendation){
+
+    if(playerStrings[recommendation].includes(selectedTopPlayer)){
+      recommendations[1][recommendations[0].indexOf(recommendation)] += 1;
+    }
+
+    let i = 0;
+    let similarPlayerFound = false;
+
+    //Checks if any player who plays with the selected racket uses this string
+    if(suitableStrings.includes(recommendation)){
+      recommendations[1][recommendations[0].indexOf(recommendation)] += 0.5;
+    }
+
+    while(i < similarPlayers.length && !similarPlayerFound){
+      if(playerStrings[recommendation].includes(similarPlayers[i])){
+        similarPlayerFound = true;
+        recommendations[1][recommendations[0].indexOf(recommendation)] += 0.5;
+      }
+      i++;
+    }
+
+  });
+}
+
+async function getStringContentTable(currentUser){
+  let contentTable = [];
+
+  let stringProperties = await getStringContentProperties();
+
+  let brands = await getStringBrands();
+  let types = await getAllStringTypes();
+  let compositions = await getAllStringCompositions();
+  let gauges = await getAllGauges();
+
+  let headers = ["modelID"].concat(brands).concat(types).concat(compositions).concat(gauges).concat(["rating"]);
+  
+  let ratings = await getUserStringRatings(currentUser);
+
+  contentTable.push(headers);
+
+  stringProperties.forEach(function(string){
+  
+    let row = [];
+
+    row.push(string._fields[0]);
+
+    brands.forEach(function(brand){
+      if(string._fields[1] == brand){
+        row.push(1);
+      }else{
+        row.push(0);
+      }
+    });
+
+    types.forEach(function(type){
+      if(string._fields[2] == type){
+        row.push(2);
+      }else{
+        row.push(0);
+      }
+    });
+
+    compositions.forEach(function(composition){
+      if(string._fields[3] == composition){
+        row.push(1);
+      }else{
+        row.push(0);
+      }
+    });
+
+    gauges.forEach(function(gauge){
+      if(string._fields[4] == gauge){
+        row.push(3);
+      }else{
+        row.push(0);
+      }
+    });
+
+    row.push(0); //Ratings added later
+    contentTable.push(row);
+  });
+
+  ratings.forEach(function(rating){
+    contentTable[rating._fields[0]][contentTable[0].length-1] = rating._fields[1];
+  });
+
+  return contentTable;
+}
 
 
 app.listen(port, () => {

@@ -5,12 +5,13 @@ import StringRecommender from '../StringRecommender/StringRecommender';
 
 export default function RacketSelector(props) {
 
-    const [selectedRacket, setSelectedRacket] = React.useState(null);
+    const [recommendedStrings,setRecommendedStrings] = React.useState([]);
+
 
     const recommendedRackets = props.rackets.map((racket, i) => {
         return (
             <div className="col-md-4">
-                <RecommendedCard racket={racket} setSelected={setSelectedRacket} number={i+1}/>
+                <RecommendedCard racket={racket} number={i+1}/>
             </div>
         )
     });
@@ -21,7 +22,7 @@ export default function RacketSelector(props) {
             <div className="container row">
                     {recommendedRackets}    
             </div>
-            <StringRecommender selectedRacket={selectedRacket}/>
+            <StringRecommender selectedRacketModels={props.rackets} setRecommendedStrings={setRecommendedStrings}/>
         </div>
     )
 }

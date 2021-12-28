@@ -14,7 +14,7 @@ import pro from '../../media/rackets/pro.jpg';
 export default function RecommendationButton(props) {
 
     const [error, setError] = useState(false);
-
+    
     const { isAuthenticated, user } = useAuth0();
 
     let imageDictionary = {
@@ -27,8 +27,7 @@ export default function RecommendationButton(props) {
         "Pro": pro
     };
 
-    async function getCollaborativeRecommendation(){
-            
+    async function getRecommendation(type){
         if(isAuthenticated){
             setError(false);
 
@@ -37,7 +36,7 @@ export default function RecommendationButton(props) {
                 headers: { 'Content-Type': 'application/json' }
             };
             
-            let response = await fetch('http://localhost:3001/getCollaborativeRecommendation?username='+user.email.split("@")[0], requestOptions)
+            let response = await fetch('http://localhost:3001/get' + type + 'Recommendation?username='+user.email.split("@")[0], requestOptions)
             
             getRacketsData(await response.json());
 
@@ -46,23 +45,18 @@ export default function RecommendationButton(props) {
         }
     }
 
+    async function getCollaborativeRecommendation(){
+        getRecommendation("Collaborative");
+    }
+
     async function getContentRecommendation(){
             
-        if(isAuthenticated){
-            setError(false);
+        getRecommendation("Content");
+    }
 
-            let requestOptions = {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
-            };
+    async function getHybridRecommendation(){
             
-            let response = await fetch('http://localhost:3001/getContentRecommendation?username='+user.email.split("@")[0], requestOptions)
-            
-            getRacketsData(await response.json());
-
-        }else{
-            setError(true);
-        }
+        getRecommendation("Hybrid");
     }
 
     async function getRacketsData(recommendedModelIDs){
@@ -93,7 +87,7 @@ export default function RecommendationButton(props) {
         });
 
         props.setRecommendedModels(racketsData);
-  };
+    };
 
     return (
     <div className="container mt-5 p-4 border rounded-3">
@@ -102,6 +96,9 @@ export default function RecommendationButton(props) {
             <div id="buttons" className="d-flex justify-content-center">
                 <button className="btn btn-lg btn-dark mx-2 col-md-5" onClick={getCollaborativeRecommendation}>Collaborative</button>
                 <button className="btn btn-lg btn-dark mx-2 col-md-5" onClick={getContentRecommendation} >Content</button>
+            </div>
+            <div id="hybrid-button">
+                <button className="btn btn-lg btn-dark mx-2 mt-2 col-md-5" onClick={getHybridRecommendation}>Hybrid</button>
             </div>
         </div>
         {error ? <Alert severity="error" className="mt-4">You must log in!</Alert>: null}

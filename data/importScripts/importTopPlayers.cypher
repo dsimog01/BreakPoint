@@ -19,10 +19,10 @@ MERGE (st:PlayerStats {
 WITH p, row, st
 
 MATCH (s:String)
-WHERE s.modelID = row.stringID
+WHERE s.modelID = toInteger(row.stringID)
 
 MATCH (r:Racket)
-WHERE r.modelID = row.racketID
+WHERE r.modelID = toInteger(row.racketID)
 
 MERGE (p)-[:USES_STRING]->(s)
 
