@@ -97,6 +97,7 @@ app.get("/getContentRecommendation", async (req, res) => {
   console.log(req.query.username + " has requested a content recommendation");
   let contentRecommendation = await getContentRecommendation(req.query.username);
   let bestRackets = getXMostSimilar(contentRecommendation, 3);
+  console.log(bestRackets);
   //Model IDs sent
   res.send(bestRackets);
 });
@@ -105,6 +106,7 @@ app.get("/getCollaborativeRecommendation", async (req, res) => {
   console.log(req.query.username + " has requested a collaborative recommendation");
   let collaborativeRecommendation = await getCollaborativeRecommendation(req.query.username);
   let bestRackets = getXMostSimilar(collaborativeRecommendation, 3);
+  console.log(bestRackets);
   //Model IDs sent
   res.send(bestRackets);
 });
@@ -113,6 +115,7 @@ app.get("/getHybridRecommendation", async (req, res) => {
   console.log(req.query.username + " has requested a hybrid recommendation");
   let hybridRecommendation = await getHybridRecommendation(req.query.username);
   let bestRackets = getXMostSimilar(hybridRecommendation, 3);
+  console.log(bestRackets);
   //Model IDs sent
   res.send(bestRackets);
 });
@@ -714,7 +717,6 @@ async function getCollabTable(usernamesList) {
   let username;
   
   let racketsNumber = (await getNumberOfRackets())[0].get(0);
-  //TODO serviria con usernamesList.length
   let usersNumber = (await getNumberOfUsers())[0].get(0);
 
   putZeros(collabTable, usersNumber, racketsNumber);
@@ -1004,6 +1006,7 @@ async function addPlayerBonus(recommendations, selectedTopPlayer, similarPlayers
 
   modelsList.forEach(function(recommendation){
 
+    //Checks if the selected top player uses this string
     if(playerStrings[recommendation].includes(selectedTopPlayer)){
       newRecommendations[1][newRecommendations[0].indexOf(recommendation)] += 1;
     }
@@ -1016,6 +1019,7 @@ async function addPlayerBonus(recommendations, selectedTopPlayer, similarPlayers
       newRecommendations[1][newRecommendations[0].indexOf(recommendation)] += 0.5;
     }
 
+    //Checks if any physically similar player uses this string
     while(i < similarPlayers.length && !similarPlayerFound){
       if(playerStrings[recommendation].includes(similarPlayers[i])){
         similarPlayerFound = true;

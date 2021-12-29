@@ -1,13 +1,13 @@
 import React from 'react';
 
-import RecommendedStringCard from '../Card/RecommendedStringCard';
+import StringRecommendationCard from '../Card/StringRecommendationCard';
 
 export default function RecommendedStrings(props) {
 
-    const recommendedStrings = props.strings.map((string, i) => {
+    const recommendedStrings = props.strings.map((recommendedString, i) => {
         return (
             <div className="col-md-4">
-                <RecommendedStringCard string={string} number={i+1}/>
+                <StringRecommendationCard recommendedString={recommendedString} number={i+1}/>
             </div>
         )
     });
@@ -16,7 +16,7 @@ export default function RecommendedStrings(props) {
         <div className="container mt-5 p-4 border rounded-3">
             <h2> Recommended Strings </h2>  
             <div className="container row">
-                {recommendedStrings}    
+                {recommendedStrings}
             </div>
         </div>
     )

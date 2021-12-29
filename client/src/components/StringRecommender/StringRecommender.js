@@ -4,6 +4,12 @@ import Select from 'react-select';
 import { TextField } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 
+import babolat from '../../media/strings/babolat.jpg';
+import prince from '../../media/strings/prince.jpg';
+import solinco from '../../media/strings/solinco.jpg';
+import wilson from '../../media/strings/wilson.jpg';
+import yonex from '../../media/strings/yonex.jpg';
+
 export default function StringRecommender(props) {
 
     const selectedRacketRef = React.useRef(null);
@@ -51,6 +57,14 @@ export default function StringRecommender(props) {
         await getStringsData(await response.json());
     }
 
+    let imageDictionary = {
+        "Babolat": babolat,
+        "Prince": prince,
+        "Solinco": solinco,
+        "Wilson": wilson,
+        "Yonex": yonex
+    };
+
     async function getStringsData(recommendedModelIDs){
   
         let requestOptions = {
@@ -70,7 +84,8 @@ export default function StringRecommender(props) {
                 brand: string._fields[1],
                 type: string._fields[2],
                 composition: string._fields[3],
-                gauge: string._fields[4]
+                gauge: string._fields[4],
+                image: imageDictionary[string._fields[1]]
             };
             stringsData.push(stringData);
         });

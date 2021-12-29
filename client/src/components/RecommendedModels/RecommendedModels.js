@@ -22,8 +22,9 @@ export default function RecommendedModels(props) {
             <div className="container row">
                     {recommendedRackets}    
             </div>
-                <StringRecommender selectedRacketModels={props.rackets} setRecommendedStrings={setRecommendedStrings}/>
-                {recommendedStrings.length!==0 ? <RecommendedStrings strings={recommendedStrings}/>: null}
+                {recommendedStrings.length===0 
+                    ? <StringRecommender selectedRacketModels={props.rackets} setRecommendedStrings={setRecommendedStrings}/>
+                    : <RecommendedStrings strings={recommendedStrings}/>}
             </div>
     )
 }
