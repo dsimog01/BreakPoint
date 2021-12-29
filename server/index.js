@@ -131,11 +131,15 @@ app.get("/getStringRecommendation", async (req, res) => {
 
   let stringRecommendation = await getStringRecommendation(username, selectedPlayerName, userHeight, userWeight, stringsUsedWithSelectedRacket);
   let bestStrings = getXMostSimilar(stringRecommendation, 3);
+  console.log(bestStrings);
   //Model IDs sent
   res.send(bestStrings);
 });
 
 app.post("/postRacketRatings", jsonParser, async (req,res) => {
+
+  console.log(req.query.username + " has posted new racket ratings");
+
   [username, modelIDs, ratingValues] = getRequestArrays(req.body, req.query.username);
 
   await saveRacketRatings(username, modelIDs, ratingValues);
@@ -143,7 +147,6 @@ app.post("/postRacketRatings", jsonParser, async (req,res) => {
 });
 
 app.post('/getRacketsDetails', jsonParser, async (req, res) => {
-  console.log(req.body);
   let modelIDs = req.body;
   let query = `MATCH (b:Brand)<-[:IS_OF_BRAND]-(r:Racket)-[:HAS_DIMENSIONS]->(d:Dimension)
               WHERE r.modelID IN [${modelIDs}] AND r.flex IS NOT NULL
@@ -152,7 +155,18 @@ app.post('/getRacketsDetails', jsonParser, async (req, res) => {
   res.send(result);
 });
 
+app.post('/getStringsDetails', jsonParser, async (req, res) => {
+  let modelIDs = req.body;
+  let query = `MATCH (b:Brand)<-[:IS_OF_BRAND]-(s:String)-[:HAS_DIMENSIONS]->(d:Dimension)
+              WHERE s.modelID IN [${modelIDs}] AND s.type IS NOT NULL
+              RETURN s.modelID, b.brandName, s.type, s.composition, d.gauge_mm`;
+  let result = await getFromDB(query);
+  res.send(result);
+});
+
 app.post("/postStringRatings", jsonParser, async (req,res) => {
+  console.log(req.query.username + " has posted new string ratings");
+
   [username, modelIDs, ratingValues] = getRequestArrays(req.body, req.query.username);
 
   await saveStringRatings(username, modelIDs, ratingValues);
@@ -823,7 +837,8 @@ async function getContentRecommendation(user){
   multiplyFeaturesByRating(reducedTable);
   [profile, frecuencies] = getUserProfile(reducedTable);
   let normalizedProfile = normalizeProfile(profile, frecuencies);
-  return getRecommendation(normalizedProfile, contentTable);
+  let recommendation = getRecommendation(normalizedProfile, contentTable);
+  return recommendation;
 }
 
 function getRecommendation(normalizedProfile, contentTable){
@@ -957,8 +972,8 @@ async function getStringRecommendation(currentUser, selectedTopPlayer, userHeigh
   let normalizedProfile = normalizeProfile(profile, frecuencies);
   let recommendation = getRecommendation(normalizedProfile, contentTable);
   let similarPlayers = await getSimilarPlayers(userHeight, userWeight);
-  await addPlayerBonus(recommendation, selectedTopPlayer, similarPlayers, suitableStrings);
-  return recommendation;
+  let newRecommendations = await addPlayerBonus(recommendation, selectedTopPlayer, similarPlayers, suitableStrings);
+  return newRecommendations;
 }
 
 async function getSimilarPlayers(userHeight, userWeight){
@@ -981,13 +996,16 @@ function getEuclideanDistance(x1, y1, x2, y2){
 
 async function addPlayerBonus(recommendations, selectedTopPlayer, similarPlayers, suitableStrings){
   let playerStrings = await getPlayerStrings();
+  let newRecommendations = recommendations.slice();
 
   //playerStrings[stringID]=players who play with that string
 
-  recommendations[0].forEach(function(recommendation){
+  let modelsList = newRecommendations[0].slice();
+
+  modelsList.forEach(function(recommendation){
 
     if(playerStrings[recommendation].includes(selectedTopPlayer)){
-      recommendations[1][recommendations[0].indexOf(recommendation)] += 1;
+      newRecommendations[1][newRecommendations[0].indexOf(recommendation)] += 1;
     }
 
     let i = 0;
@@ -995,18 +1013,20 @@ async function addPlayerBonus(recommendations, selectedTopPlayer, similarPlayers
 
     //Checks if any player who plays with the selected racket uses this string
     if(suitableStrings.includes(recommendation)){
-      recommendations[1][recommendations[0].indexOf(recommendation)] += 0.5;
+      newRecommendations[1][newRecommendations[0].indexOf(recommendation)] += 0.5;
     }
 
     while(i < similarPlayers.length && !similarPlayerFound){
       if(playerStrings[recommendation].includes(similarPlayers[i])){
         similarPlayerFound = true;
-        recommendations[1][recommendations[0].indexOf(recommendation)] += 0.5;
+        newRecommendations[1][newRecommendations[0].indexOf(recommendation)] += 0.5;
       }
       i++;
     }
 
   });
+
+  return newRecommendations;
 }
 
 async function getStringContentTable(currentUser){

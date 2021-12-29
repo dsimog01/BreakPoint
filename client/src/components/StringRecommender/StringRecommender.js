@@ -46,9 +46,9 @@ export default function StringRecommender(props) {
         let selectedRacket = selectedRacketRef.current.getValue()[0].value;
         let selectedRacketID = props.selectedRacketModels[selectedRacket-1].modelID;
         
-        let response = await fetch('http://localhost:3001/getStringRecommendation?username='+user.email.split("@")[0] + '&selectedPlayer=' + selectedPlayer + '&userHeight=' + userHeight + '&userWeight=' + userWeight + '&selectedRacketID=' + selectedRacketID, requestOptions)
+        let response = await fetch('http://localhost:3001/getStringRecommendation?username='+user.email.split("@")[0] + '&selectedPlayer=' + selectedPlayer + '&userHeight=' + userHeight + '&userWeight=' + userWeight + '&selectedRacketID=' + selectedRacketID, requestOptions);
         
-        getStringsData(await response.json());
+        await getStringsData(await response.json());
     }
 
     async function getStringsData(recommendedModelIDs){
@@ -70,10 +70,12 @@ export default function StringRecommender(props) {
                 brand: string._fields[1],
                 type: string._fields[2],
                 composition: string._fields[3],
-                gauge: string._fields[4],
+                gauge: string._fields[4]
             };
             stringsData.push(stringData);
         });
+
+        console.log(stringsData);
 
         props.setRecommendedStrings(stringsData);
     };
